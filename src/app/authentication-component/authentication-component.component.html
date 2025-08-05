@@ -1,0 +1,49 @@
+<div class="center">
+  <div class="column">
+    <form [formGroup]="loginForm">
+      <div>
+        <mat-form-field style="width: 240px">
+          <mat-label>Enter your email</mat-label>
+          <input
+            matInput
+            placeholder="pat@example.com"
+            formControlName="email"
+            (blur)="updateErrorMessage()"
+            required
+          />
+          @if (loginForm.controls["email"].invalid) {
+          <mat-error>{{ errorMessage() }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-label>Enter your password*</mat-label>
+          <input
+            matInput
+            formControlName="password"
+            [type]="hide() ? 'password' : 'text'"
+          />
+          <button
+            matIconButton
+            matSuffix
+            (click)="clickEvent($event)"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide()"
+          >
+            <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </form>
+    <button (click)="submit()">Войти</button>
+    <div>
+      <button class="dooble-button">
+        <a [routerLink]="['/authentication']">Регистрация</a>
+      </button>
+      <button class="dooble-button">
+        <a [routerLink]="['/login']">Вход</a>
+      </button>
+    </div>
+  </div>
+</div>

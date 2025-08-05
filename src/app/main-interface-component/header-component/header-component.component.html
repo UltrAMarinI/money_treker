@@ -1,0 +1,39 @@
+<div class="header">
+  <div class="name-logout">
+    <div>
+      <p>
+        @switch (langService.language$ | async) { @case ('ru') { Имя: } @case
+        ('en'){ Name: }}
+      </p>
+      {{ usrName }}
+    </div>
+    <button (click)="logoutButton()">
+      <p>
+        @switch (langService.language$ | async) { @case ('ru') { Выйти из
+        аккаунта } @case ('en') { Logout with accaunt } }
+      </p>
+    </button>
+  </div>
+  <div class="lang">
+    <div>
+      <input
+        type="radio"
+        name="language"
+        value="ru"
+        [checked]="langService.getLanguage() === 'ru'"
+        (change)="changeLanguage('ru')"
+      />
+      Русский
+    </div>
+    <div>
+      <input
+        type="radio"
+        name="language"
+        value="en"
+        [checked]="langService.getLanguage() === 'en'"
+        (change)="changeLanguage('en')"
+      />
+      English
+    </div>
+  </div>
+</div>
