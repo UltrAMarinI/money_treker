@@ -1,3 +1,21 @@
-<p>main-interface-component works!</p>
-<app-header-component></app-header-component>
-<app-add-transaction-component></app-add-transaction-component>
+<div class="main">
+  <app-header-component></app-header-component>
+  <div class="main_menu">
+    <div>
+      <app-add-transaction-component
+        (addFormTranz)="addTranzact($event)"
+        (editFormTrans)="putTransact($event)"
+        (isEdit)="resetFormCard($event)"
+        [upForm]="edit"
+      ></app-add-transaction-component>
+      <app-graphics-transaction-component
+        [transArrayGraph]="arrayTrans"
+      ></app-graphics-transaction-component>
+    </div>
+    <app-list-transaction-component
+      (deleteTrans)="deleteTranz($event)"
+      (editTrans)="editTransact($event)"
+      [transArray]="arrayTrans"
+    ></app-list-transaction-component>
+  </div>
+</div>

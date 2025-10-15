@@ -9,7 +9,7 @@ import { Transaction } from '../interface/transaction.interface';
   providedIn: 'root',
 })
 export class BackendService {
-  private api = 'http://localhost:5000/api/';
+  private api = 'http://localhost:5001/api/';
 
   constructor(private http: HttpClient) {}
 
@@ -31,5 +31,9 @@ export class BackendService {
 
   deleteTransaction(id: string): Observable<Transaction> {
     return this.http.delete<Transaction>(`${this.api}transactions/${id}`);
+  }
+
+  updateTransaction(transaction: Transaction): Observable<Transaction> {
+    return this.http.put<Transaction>(`${this.api}transactions/${transaction._id}`, transaction);
   }
 }

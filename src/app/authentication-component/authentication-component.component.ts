@@ -1,9 +1,17 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  HostListener,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
 import {
   FormControl,
   FormGroup,
@@ -26,6 +34,7 @@ import { SubjectService } from '../../shared/services/subject.service';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    MatDividerModule,
   ],
   templateUrl: './authentication-component.component.html',
   styleUrl: './authentication-component.component.scss',
@@ -39,7 +48,7 @@ export class AuthenticationComponentComponent implements OnInit {
 
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl(),
+    password: new FormControl('', Validators.required),
   });
 
   constructor(
@@ -48,6 +57,15 @@ export class AuthenticationComponentComponent implements OnInit {
     private router: Router,
     private sbjService: SubjectService
   ) {}
+
+  @HostListener('document:keydown.enter', ['$event'])
+  handleEnterKey(event: KeyboardEvent) {
+    // Проверяем, что Enter нажат и форма заполнена
+    if (this.loginForm.valid) {
+      event.preventDefault(); // Предотвращаем стандартное поведение
+      this.submit();
+    }
+  }
 
   ngOnInit(): void {
     this.isLogin = this.route.snapshot.url[0]?.path === 'login';
@@ -90,10 +108,12 @@ export class AuthenticationComponentComponent implements OnInit {
   }
 
   submit() {
-    if (this.isLogin) {
-      this.loginUser();
-    } else {
-      this.singupUser();
+    if (this.loginForm.valid) {
+      if (this.isLogin) {
+        this.loginUser();
+      } else {
+        this.singupUser();
+      }
     }
   }
 }

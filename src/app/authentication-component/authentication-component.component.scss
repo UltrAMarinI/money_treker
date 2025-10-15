@@ -18,17 +18,19 @@ input.example-right-align {
 .center {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100vw;
   height: 100vh;
-}
-
-.column {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  background-color: rgb(236, 249, 251);
 }
 
 .dooble-button {
   width: 120px;
   margin-top: 20px;
+}
+
+.color_white {
+  background-color: white;
+  padding: 30px;
+  border-radius: 50px;
 }

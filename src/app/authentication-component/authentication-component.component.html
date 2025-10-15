@@ -1,5 +1,5 @@
 <div class="center">
-  <div class="column">
+  <div class="color_white">
     <form [formGroup]="loginForm">
       <div>
         <mat-form-field style="width: 240px">
@@ -36,13 +36,23 @@
         </mat-form-field>
       </div>
     </form>
-    <button (click)="submit()">Войти</button>
+    <div style="display: flex; flex-direction: column;">
+      <button matButton="tonal" (click)="submit()">Войти</button>
+    </div>
     <div>
-      <button class="dooble-button">
-        <a [routerLink]="['/authentication']">Регистрация</a>
+      <button matButton="tonal" class="dooble-button">
+        <a
+          style="text-decoration: none; color: #3e4759"
+          [routerLink]="['/authentication']"
+          >Регистрация</a
+        >
       </button>
-      <button class="dooble-button">
-        <a [routerLink]="['/login']">Вход</a>
+      <button matButton="tonal" class="dooble-button">
+        <a
+          style="text-decoration: none; color: #3e4759"
+          [routerLink]="['/login']"
+          >Вход</a
+        >
       </button>
     </div>
   </div>
