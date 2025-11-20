@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslateService } from '../../../shared/services/translate.service';
 import { AsyncPipe } from '@angular/common';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 interface Type {
   value: string;
@@ -25,6 +26,7 @@ interface Type {
 @Component({
   selector: 'app-list-transaction-component',
   imports: [
+    MatPaginatorModule,
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
@@ -63,10 +65,18 @@ export class ListTransactionComponentComponent implements OnChanges, OnInit {
   categoriesControl = new FormControl(null);
   categoryList: string[] = ['food', 'transport', 'salary', 'present'];
   filterTransaction: Transaction[] = [];
-  numberOfPages: number = 1;
-  numberOfElement: number = 5;
+  paginatorInfo = {};
+  pageSize = 5;
+  pageIndex = 0;
 
   ngOnInit(): void {
+    // combineLatest([
+    //   this.typeControl.valueChanges,
+    //   this.amountControl.valueChanges,
+    //   this.categoriesControl.valueChanges,
+    // ]).subscribe(([type, amount, category]) => {
+    //   this.applyAllFilters(type, amount, category);
+    // });
     this.typeControl.valueChanges.subscribe((a) => {
       // this.amountControl.setValue(null, { emitEvent: false });
       // this.categoriesControl.setValue(null, { emitEvent: false });
@@ -85,16 +95,24 @@ export class ListTransactionComponentComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['transArray'].currentValue) {
+    if (changes['transArray'].currentValue && changes['transArray']) {
       this.filterTransaction = changes['transArray'].currentValue;
-      console.log('length', this.filterTransaction.length);
-
-      console.log('page', this.numberOfPages);
-      console.log('elem', this.numberOfElement);
+      // this.applyAllFilters(
+      //   this.typeControl.value,
+      //   this.amountControl.value,
+      //   this.categoriesControl.value
+      // );
+      this.paginatedTransactions;
       this.typeFilter(this.typeControl.value);
       this.amountFilter(this.amountControl.value);
       this.categoryFilter(this.categoriesControl.value);
     }
+  }
+
+  get paginatedTransactions() {
+    const startIndex = this.pageIndex * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.filterTransaction.slice(startIndex, endIndex);
   }
 
   deleteButton(id: string | undefined) {
@@ -108,7 +126,37 @@ export class ListTransactionComponentComponent implements OnChanges, OnInit {
     this.editTrans.emit(trans);
   }
 
+  // applyAllFilters(
+  //   type: string | null,
+  //   amount: string | null,
+  //   categories: string[] | null
+  // ) {
+  //   let filtered = [...this.transArray];
+
+  //   if (type && type !== 'undefined') {
+  //     filtered = filtered.filter((trans) => {
+  //       return type === trans.type;
+  //     });
+  //   }
+
+  //   if (amount === 'ascending') {
+  //     filtered = [...filtered].sort((a, b) => a.amount - b.amount);
+  //   } else if (amount === 'descending')
+  //     filtered = [...filtered].sort((a, b) => b.amount - a.amount);
+
+  //   if (categories && categories.length > 0) {
+  //     filtered = filtered.filter((trans) =>
+  //       categories.includes(trans.category)
+  //     );
+  //   }
+
+  //   this.filterTransaction = filtered;
+  //   this.pageIndex = 0;
+  // }
+
   typeFilter(type: string | null) {
+    console.log('type work');
+
     if (type === null) return;
     if (type === 'undefined') {
       this.typeControl.setValue(null, { emitEvent: false });
@@ -116,6 +164,7 @@ export class ListTransactionComponentComponent implements OnChanges, OnInit {
       this.amountFilter(this.amountControl.value);
       this.categoryFilter(this.categoriesControl.value);
     } else {
+      this.paginatedTransactions;
       this.filterTransaction = this.transArray.filter((trans) => {
         return type === trans.type;
       });
@@ -123,12 +172,16 @@ export class ListTransactionComponentComponent implements OnChanges, OnInit {
   }
 
   amountFilter(amount: string | null) {
+    console.log('prise work');
+
     if (amount === null) return;
     if (amount === 'ascending') {
+      this.paginatedTransactions;
       this.filterTransaction.sort((a, b) => a.amount - b.amount);
-    } else if (amount === 'descending')
+    } else if (amount === 'descending') {
+      this.paginatedTransactions;
       this.filterTransaction.sort((a, b) => b.amount - a.amount);
-    else {
+    } else {
       this.amountControl.setValue(null, { emitEvent: false });
       this.filterTransaction = [...this.transArray];
       this.typeFilter(this.typeControl.value);
@@ -137,6 +190,8 @@ export class ListTransactionComponentComponent implements OnChanges, OnInit {
   }
 
   categoryFilter(category: string[] | null) {
+    console.log('category work');
+
     if (category === null) return;
     if (
       (this.typeControl.value !== null && category.length === 0) ||
@@ -147,13 +202,11 @@ export class ListTransactionComponentComponent implements OnChanges, OnInit {
         this.amountFilter(this.amountControl.value);
     }
     if (category.length > 0) {
+      this.paginatedTransactions;
       this.filterTransaction = this.transArray.filter((cat) => {
         return category.includes(cat.category);
       });
     }
-    // else {
-    //   this.filterTransaction = [...this.transArray];
-    // }
     if (
       category.length === 0 &&
       this.typeControl.value === null &&
@@ -164,29 +217,13 @@ export class ListTransactionComponentComponent implements OnChanges, OnInit {
   }
 
   resetFilterButton() {
-    this.typeControl.setValue(null, { emitEvent: false });
-    this.amountControl.setValue(null, { emitEvent: false });
-    this.categoriesControl.setValue(null, { emitEvent: false });
-    this.filterTransaction = [...this.transArray];
+    this.typeControl.setValue(null);
+    this.amountControl.setValue(null);
+    this.categoriesControl.setValue(null);
   }
 
-  checkPages(): number {
-    if (Math.floor(this.filterTransaction.length / this.numberOfElement) <= 0) {
-      return (this.numberOfPages = 1);
-    } else
-      return (this.numberOfPages = Math.floor(
-        this.filterTransaction.length / this.numberOfElement
-      ));
-  }
-
-  incrementPage() {
-    let sumPage = this.checkPages();
-    if (this.numberOfPages >= sumPage) return;
-    this.numberOfPages++;
-  }
-
-  decrementPage() {
-    if (this.numberOfPages === 1) return;
-    this.numberOfPages--;
+  onPageChange(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
   }
 }

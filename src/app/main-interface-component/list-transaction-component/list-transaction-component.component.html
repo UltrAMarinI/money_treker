@@ -47,10 +47,8 @@
     </p>
   </button>
 
-  @for (item of filterTransaction; track $index) {
+  @for (item of paginatedTransactions; track $index) {
   <div class="list_for">
-    @if ($index <= numberOfElement * numberOfPages-1 && $index >= numberOfPages
-    * numberOfElement - numberOfElement) {
     <div class="list_body">
       <div>
         @switch (langService.language$ | async) { @case ('ru') { Тип: } @case
@@ -88,10 +86,16 @@
         </p>
       </button>
     </div>
-    }
   </div>
   }
-  <button (click)="incrementPage()">вперед</button>
-  <button (click)="decrementPage()">назад</button>
-  <p>{{ numberOfPages }}</p>
+  <mat-paginator
+    style="background-color: white"
+    [length]="filterTransaction.length"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [pageSizeOptions]="[5, 10]"
+    aria-label="Select page"
+    (page)="onPageChange($event)"
+  >
+  </mat-paginator>
 </div>
