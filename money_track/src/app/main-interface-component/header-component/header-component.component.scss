@@ -1,0 +1,24 @@
+.name-logout {
+  display: flex;
+  flex-direction: column;
+  margin-left: 30px;
+}
+
+.lang {
+  display: flex;
+  flex-direction: column;
+  margin-right: 30px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #3d3d6b;
+}
+
+.button_header{
+    margin: 5px;
+    margin-left: 0px;
+}

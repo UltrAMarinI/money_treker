@@ -1,0 +1,11 @@
+.main_menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.main {
+  min-height: 100%;
+  width: 100vw;
+  background-color: rgb(236, 249, 251);
+}
