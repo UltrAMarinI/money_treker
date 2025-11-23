@@ -1,4 +1,4 @@
-.example-container mat-form-field + mat-form-field {
+.example-container mat-form-field+mat-form-field {
   margin-left: 8px;
 }
 
@@ -17,20 +17,41 @@ input.example-right-align {
 
 .center {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: rgb(236, 249, 251);
+  background: #a1edeb;
+  background: linear-gradient(180deg, rgba(161, 237, 235, 1) 0%, rgba(191, 205, 255, 1) 50%, rgba(255, 255, 255, 1) 100%);
 }
 
 .dooble-button {
-  width: 120px;
+  width: 50rem;
   margin-top: 20px;
 }
 
 .color_white {
+  width: 20rem;
   background-color: white;
   padding: 30px;
   border-radius: 50px;
+}
+
+.button_menu {
+  display: flex;
+  justify-content: space-between;
+}
+
+.inputs_button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  margin-bottom: 20px;
+  color: #3e4759;
+  font-size: x-large;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }

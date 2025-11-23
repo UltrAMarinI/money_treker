@@ -1,11 +1,12 @@
 .main_menu {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .main {
   min-height: 100%;
   width: 100vw;
-  background-color: rgb(236, 249, 251);
+  background: #a1edeb;
+  background: linear-gradient(180deg, rgba(161, 237, 235, 1) 0%, rgba(191, 205, 255, 1) 50%, rgba(255, 255, 255, 1) 100%);
 }

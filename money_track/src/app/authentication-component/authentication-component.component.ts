@@ -56,13 +56,12 @@ export class AuthenticationComponentComponent implements OnInit {
     private backendService: BackendService,
     private router: Router,
     private sbjService: SubjectService
-  ) {}
+  ) { }
 
   @HostListener('document:keydown.enter', ['$event'])
   handleEnterKey(event: KeyboardEvent) {
-    // Проверяем, что Enter нажат и форма заполнена
     if (this.loginForm.valid) {
-      event.preventDefault(); // Предотвращаем стандартное поведение
+      event.preventDefault();
       this.submit();
     }
   }

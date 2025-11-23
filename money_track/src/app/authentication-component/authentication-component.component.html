@@ -1,16 +1,12 @@
 <div class="center">
+  <div class="title">{{isLogin?"Вход":"Регистрация"}}</div>
   <div class="color_white">
-    <form [formGroup]="loginForm">
+    <form class="inputs_button " [formGroup]="loginForm">
       <div>
         <mat-form-field style="width: 240px">
           <mat-label>Enter your email</mat-label>
-          <input
-            matInput
-            placeholder="pat@example.com"
-            formControlName="email"
-            (blur)="updateErrorMessage()"
-            required
-          />
+          <input matInput placeholder="pat@example.com" formControlName="email" (blur)="updateErrorMessage()"
+            required />
           @if (loginForm.controls["email"].invalid) {
           <mat-error>{{ errorMessage() }}</mat-error>
           }
@@ -19,41 +15,24 @@
       <div>
         <mat-form-field>
           <mat-label>Enter your password*</mat-label>
-          <input
-            matInput
-            formControlName="password"
-            [type]="hide() ? 'password' : 'text'"
-          />
-          <button
-            matIconButton
-            matSuffix
-            (click)="clickEvent($event)"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide()"
-          >
+          <input matInput formControlName="password" [type]="hide() ? 'password' : 'text'" />
+          <button matIconButton matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide()">
             <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
         </mat-form-field>
       </div>
     </form>
-    <div style="display: flex; flex-direction: column;">
-      <button matButton="tonal" (click)="submit()">Войти</button>
-    </div>
-    <div>
-      <button matButton="tonal" class="dooble-button">
-        <a
-          style="text-decoration: none; color: #3e4759"
-          [routerLink]="['/authentication']"
-          >Регистрация</a
-        >
-      </button>
-      <button matButton="tonal" class="dooble-button">
-        <a
-          style="text-decoration: none; color: #3e4759"
-          [routerLink]="['/login']"
-          >Вход</a
-        >
-      </button>
+    <div class="button_menu">
+      @if(isLogin===true){<button matButton="tonal" class="dooble-button">
+        <a style="text-decoration: none; color: #3e4759" [routerLink]="['/authentication']">Регистрация</a>
+      </button>}
+      @else{ <button matButton="tonal" class="dooble-button">
+        <a style="text-decoration: none; color: #3e4759" [routerLink]="['/login']">Вход</a>
+      </button> }
+
+      <button matButton="tonal" class="dooble-button"
+        (click)="submit()">{{isLogin?"Войти":"Зарегистрироваться"}}</button>
     </div>
   </div>
 </div>
