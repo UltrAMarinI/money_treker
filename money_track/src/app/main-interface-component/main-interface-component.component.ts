@@ -5,6 +5,7 @@ import { ListTransactionComponentComponent } from './list-transaction-component/
 import { BackendService } from '../../shared/services/backend';
 import { Transaction } from '../../shared/interface/transaction.interface';
 import { GraphicsTransactionComponentComponent } from './graphics-transaction-component/graphics-transaction-component.component';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-main-interface-component',
@@ -13,13 +14,14 @@ import { GraphicsTransactionComponentComponent } from './graphics-transaction-co
     AddTransactionComponentComponent,
     ListTransactionComponentComponent,
     GraphicsTransactionComponentComponent,
+    RouterModule,
   ],
   templateUrl: './main-interface-component.component.html',
   styleUrl: './main-interface-component.component.scss',
   standalone: true,
 })
 export class MainInterfaceComponentComponent implements OnInit {
-  constructor(private back: BackendService) {}
+  constructor(private back: BackendService, public router: Router) { }
 
   ngOnInit(): void {
     this.getTransArr();
@@ -61,5 +63,9 @@ export class MainInterfaceComponentComponent implements OnInit {
 
   resetFormCard(isEdit: boolean) {
     if (isEdit === true) this.edit = undefined;
+  }
+
+  reportsButton() {
+    this.router.navigate(['/reports'])
   }
 }
