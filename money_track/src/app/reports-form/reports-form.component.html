@@ -1,1 +1,41 @@
 <p>reports-form works!</p>
+<form [formGroup]="reportsForm" (ngSubmit)="onSubmit()">
+  <div style="display: flex; flex-direction: column; width: 300px">
+    <label>Дата подачи заявки</label>
+    <input formControlName="applicationDate" />
+    <label>Название компании</label>
+    <input formControlName="companyName" />
+    <label>ИНН</label>
+    <input formControlName="taxId" />
+    <label>Отчетный период</label>
+    <input formControlName="reportingPeriod" />
+    <label>Контактное лицо</label>
+    <input formControlName="contactPerson" />
+    <label>Контактый телефон</label>
+    <input formControlName="contactPhone" />
+    <label>e-mail</label>
+    <input formControlName="contactEmail" />
+  </div>
+  <div>
+    <label>Какие виды отчетности необходимо проверить?</label>
+
+    <select formControlName="selectedReportTypes">
+      <option value="Бухгалтерский баланс">Бухгалтерский баланс</option>
+      <option value="Отчет о финансовых результатах">
+        Отчет о финансовых результатах
+      </option>
+      <option value="Отчет о движении денежных средств">
+        Отчет о движении денежных средств
+      </option>
+      <option value="Налоговая отчетность">Налоговая отчетность</option>
+    </select>
+    <div style="display: flex; flex-direction: column">
+      @if(reportsType){
+      <label>Тип налогообложения</label>
+      <label>Годовая налоговая декларация</label>
+      <label>Декларация по НДС</label>
+      }
+    </div>
+  </div>
+  <button type="submit">Отправить</button>
+</form>
