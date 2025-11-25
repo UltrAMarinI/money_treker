@@ -1,4 +1,3 @@
-<p>reports-form works!</p>
 <form [formGroup]="reportsForm" (ngSubmit)="onSubmit()">
   <div style="display: flex; flex-direction: column; width: 300px">
     <label>Дата подачи заявки</label>
@@ -18,7 +17,6 @@
   </div>
   <div>
     <label>Какие виды отчетности необходимо проверить?</label>
-
     <select formControlName="selectedReportTypes">
       <option value="Бухгалтерский баланс">Бухгалтерский баланс</option>
       <option value="Отчет о финансовых результатах">
@@ -35,6 +33,20 @@
       <label>Годовая налоговая декларация</label>
       <label>Декларация по НДС</label>
       }
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: row">
+    <label>Требуется ли проведение специального аудита?</label>
+    <div>
+      <input type="checkbox" name="true" />
+      <label>Да</label>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: row">
+    <label>Имеет ли компания операции на международных рынках?</label>
+    <div>
+      <input type="checkbox" name="true" />
+      <label>Да</label>
     </div>
   </div>
   <button type="submit">Отправить</button>

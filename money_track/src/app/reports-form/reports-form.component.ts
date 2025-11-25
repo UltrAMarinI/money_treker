@@ -14,10 +14,17 @@ import {
   styleUrl: './reports-form.component.scss',
 })
 export class ReportsFormComponent {
+  reportsForm!: FormGroup;
+  reportsTypeArray = [
+    'Бухгалтерский баланс',
+    'Отчет о финансовых результатах',
+    'Отчет о движении денежных средств',
+    'Налоговая отчетность',
+  ];
+
   constructor(private fb: FormBuilder) {
     this.createForm();
   }
-  reportsForm!: FormGroup;
 
   private createForm() {
     this.reportsForm = this.fb.group({
@@ -47,12 +54,15 @@ export class ReportsFormComponent {
   }
 
   onSubmit() {
-    console.log(this.reportsForm);
+    console.log(this.reportsForm.value);
   }
 
   get reportsType() {
     // let type: [] = this.reportsForm.get('selectedReportTypes')?.value();
     // return type.includes('Налоговая отчетность');
-    return false
+    return true;
   }
+  //TODO 
+  //сделать гетеры для ифов???
+  //перестраивать на материал
 }
