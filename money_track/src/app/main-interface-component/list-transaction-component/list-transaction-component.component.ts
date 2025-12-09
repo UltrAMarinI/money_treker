@@ -42,7 +42,7 @@ interface Type {
 })
 export class ListTransactionComponentComponent implements OnChanges, OnInit {
   //список с редактированием и удалением
-  constructor(public langService: TranslateService) { }
+  constructor(public langService: TranslateService) {}
 
   @Output() deleteTrans = new EventEmitter<string>();
   @Output() editTrans = new EventEmitter<Transaction>();
@@ -124,8 +124,6 @@ export class ListTransactionComponentComponent implements OnChanges, OnInit {
   editButton(trans: Transaction) {
     this.editTrans.emit(trans);
   }
-
-
 
   onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;

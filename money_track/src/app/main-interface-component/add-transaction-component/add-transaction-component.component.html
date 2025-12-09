@@ -1,21 +1,45 @@
 <div class="form">
-  @switch (langService.language$|async) {@case ('ru') {Добавить тразакцию} @case
-  ('en') {Add transaction}}
+  @switch (langService.language$ | async) {
+    @case ('ru') {
+      Добавить тразакцию
+    }
+    @case ('en') {
+      Add transaction
+    }
+  }
   <form [formGroup]="TransForm">
     <div>
-      @switch (langService.language$|async) {@case ('ru') {Тип:}@case ('en')
-      {Type:}}
+      @switch (langService.language$ | async) {
+        @case ('ru') {
+          Тип:
+        }
+        @case ('en') {
+          Type:
+        }
+      }
       <mat-radio-group aria-label="Select an option" formControlName="type">
         <mat-radio-button value="income" name="type">
           <p>
-            @switch (langService.language$|async) {@case ('ru') {Доход}@case
-            ('en') {Income}}
+            @switch (langService.language$ | async) {
+              @case ('ru') {
+                Доход
+              }
+              @case ('en') {
+                Income
+              }
+            }
           </p></mat-radio-button
         >
         <mat-radio-button value="expense" name="type">
           <p>
-            @switch (langService.language$|async) {@case ('ru') {Расход}@case
-            ('en') {Expense}}
+            @switch (langService.language$ | async) {
+              @case ('ru') {
+                Расход
+              }
+              @case ('en') {
+                Expense
+              }
+            }
           </p>
         </mat-radio-button>
       </mat-radio-group>
@@ -23,72 +47,119 @@
     <div>
       <mat-form-field style="width: 100%">
         <mat-label>
-          @switch (langService.language$|async) {@case ('ru') {Цена}@case ('en')
-          {Prise}}</mat-label
-        >
+          @switch (langService.language$ | async) {
+            @case ('ru') {
+              Цена
+            }
+            @case ('en') {
+              Prise
+            }
+          }
+        </mat-label>
         <input matInput type="number" formControlName="amount" />
       </mat-form-field>
     </div>
     <div>
       <mat-form-field style="width: 100%">
         <mat-label>
-          @switch (langService.language$|async) {@case ('ru') {Категория}@case
-          ('en') {Category}}</mat-label
-        >
+          @switch (langService.language$ | async) {
+            @case ('ru') {
+              Категория
+            }
+            @case ('en') {
+              Category
+            }
+          }
+        </mat-label>
         <mat-select formControlName="category">
           <mat-option value="food">
-            @switch (langService.language$|async) {@case ('ru') {Еда}@case
-            ('en') {Food}}</mat-option
-          >
+            @switch (langService.language$ | async) {
+              @case ('ru') {
+                Еда
+              }
+              @case ('en') {
+                Food
+              }
+            }
+          </mat-option>
           <mat-option value="transport">
-            @switch (langService.language$|async) {@case ('ru') {Транспорт}@case
-            ('en') {Trasport}}</mat-option
-          >
+            @switch (langService.language$ | async) {
+              @case ('ru') {
+                Транспорт
+              }
+              @case ('en') {
+                Trasport
+              }
+            }
+          </mat-option>
           <mat-option value="salary">
-            @switch (langService.language$|async) {@case ('ru') {Зарплата}@case
-            ('en') {Salary}}</mat-option
-          >
+            @switch (langService.language$ | async) {
+              @case ('ru') {
+                Зарплата
+              }
+              @case ('en') {
+                Salary
+              }
+            }
+          </mat-option>
           <mat-option value="present">
-            @switch (langService.language$|async) {@case ('ru') {Подарки}@case
-            ('en') {Present}}</mat-option
-          >
+            @switch (langService.language$ | async) {
+              @case ('ru') {
+                Подарки
+              }
+              @case ('en') {
+                Present
+              }
+            }
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
     <div>
-      <mat-form-field style="width: 100%;">
+      <mat-form-field style="width: 100%">
         <mat-label>
-          @switch (langService.language$|async) {@case ('ru') {Выберите
-          дату}@case ('en') {Choose a date}}</mat-label
-        >
+          @switch (langService.language$ | async) {
+            @case ('ru') {
+              Выберите дату
+            }
+            @case ('en') {
+              Choose a date
+            }
+          }
+        </mat-label>
         <input matInput [matDatepicker]="picker" formControlName="date" />
         <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
-        <mat-datepicker-toggle
-          matIconSuffix
-          [for]="picker"
-        ></mat-datepicker-toggle>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </div>
     <div>
       <mat-form-field style="width: 100%" class="example-full-width">
         <mat-label>
-          @switch (langService.language$|async) {@case ('ru') {Оставьте
-          комментарий:}@case ('en') {Leave a comment}}</mat-label
-        >
+          @switch (langService.language$ | async) {
+            @case ('ru') {
+              Оставьте комментарий:
+            }
+            @case ('en') {
+              Leave a comment
+            }
+          }
+        </mat-label>
         <textarea formControlName="description" matInput></textarea>
       </mat-form-field>
     </div>
   </form>
 
-  <button
-    matButton="tonal"
-    [disabled]="TransForm.invalid"
-    (click)="addTransaction()"
-  >
+  <button matButton="tonal" [disabled]="TransForm.invalid" (click)="addTransaction()">
     <p>
-      @switch (langService.language$|async) {@case ('ru') {Добавить}@case ('en')
-      {Add}}
+      @switch (langService.language$ | async) {
+        @case ('ru') {
+          Добавить
+        }
+        @case ('en') {
+          Add
+        }
+      }
     </p>
   </button>
 </div>

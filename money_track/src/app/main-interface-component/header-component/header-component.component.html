@@ -1,15 +1,32 @@
 <div class="header">
   <div class="name-logout">
     <div>
-      @switch (langService.language$ | async) { @case ('ru') { Имя: } @case
-      ('en'){ Name: }}
+      @switch (langService.language$ | async) {
+        @case ('ru') {
+          Имя:
+        }
+        @case ('en') {
+          Name:
+        }
+      }
 
       {{ usrName }}
     </div>
-    <button style="background-color: #f3f3f36e;" class="button_header" matButton="tonal" (click)="logoutButton()">
+    <button
+      style="background-color: #f3f3f36e"
+      class="button_header"
+      matButton="tonal"
+      (click)="logoutButton()"
+    >
       <p>
-        @switch (langService.language$ | async) { @case ('ru') { Выйти из
-        аккаунта } @case ('en') { Logout with accaunt } }
+        @switch (langService.language$ | async) {
+          @case ('ru') {
+            Выйти из аккаунта
+          }
+          @case ('en') {
+            Logout with accaunt
+          }
+        }
       </p>
     </button>
   </div>

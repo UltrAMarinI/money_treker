@@ -47,16 +47,16 @@ export class GraphicsTransactionComponentComponent implements OnDestroy {
     this.chart = new Chart<any>('canvas', {
       type: 'bar',
       data: {
-        labels: arr.map((a) => this.formatDate(a.date)),
+        labels: arr.map(a => this.formatDate(a.date)),
         datasets: [
           {
             label: 'Доходы',
-            data: arr.map((arr) => this.formatIncome(arr)),
+            data: arr.map(arr => this.formatIncome(arr)),
             borderWidth: 1,
           },
           {
             label: 'Расходы',
-            data: arr.map((arr) => this.formatExpence(arr)),
+            data: arr.map(arr => this.formatExpence(arr)),
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
             borderColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 1,

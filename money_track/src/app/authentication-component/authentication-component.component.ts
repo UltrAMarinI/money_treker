@@ -1,11 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  HostListener,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { Component, DestroyRef, HostListener, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -56,7 +49,7 @@ export class AuthenticationComponentComponent implements OnInit {
     private backendService: BackendService,
     private router: Router,
     private sbjService: SubjectService
-  ) { }
+  ) {}
 
   @HostListener('document:keydown.enter', ['$event'])
   handleEnterKey(event: KeyboardEvent) {
@@ -92,7 +85,7 @@ export class AuthenticationComponentComponent implements OnInit {
   }
 
   loginUser() {
-    this.backendService.postLogin(this.loginForm.value).subscribe((jwt) => {
+    this.backendService.postLogin(this.loginForm.value).subscribe(jwt => {
       this.sbjService.userName.next(this.loginForm.value.email);
       localStorage.setItem('token', jwt.token);
       this.router.navigate(['/main']);
@@ -100,7 +93,7 @@ export class AuthenticationComponentComponent implements OnInit {
   }
 
   singupUser() {
-    this.backendService.postAuth(this.loginForm.value).subscribe((jwt) => {
+    this.backendService.postAuth(this.loginForm.value).subscribe(jwt => {
       localStorage.setItem('token', jwt.token);
       this.router.navigate(['/main']);
     });

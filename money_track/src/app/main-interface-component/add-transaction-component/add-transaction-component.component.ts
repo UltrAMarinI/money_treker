@@ -7,12 +7,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -69,10 +64,7 @@ export class AddTransactionComponentComponent implements OnChanges {
 
   TransForm: FormGroup = new FormGroup({
     type: new FormControl<string>('', Validators.required),
-    amount: new FormControl<number | null>(null, [
-      Validators.required,
-      Validators.min(0),
-    ]),
+    amount: new FormControl<number | null>(null, [Validators.required, Validators.min(0)]),
     category: new FormControl<string>('', Validators.required),
     date: new FormControl<string>('', Validators.required),
     description: new FormControl<string>(''),

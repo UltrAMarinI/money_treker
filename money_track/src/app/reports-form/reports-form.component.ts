@@ -62,7 +62,7 @@ export class ReportsFormComponent {
     // return type.includes('Налоговая отчетность');
     return true;
   }
-  //TODO 
+  //TODO
   //сделать гетеры для ифов???
   //перестраивать на материал
 }

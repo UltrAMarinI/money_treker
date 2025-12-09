@@ -21,7 +21,10 @@ import { Router, RouterModule } from '@angular/router';
   standalone: true,
 })
 export class MainInterfaceComponentComponent implements OnInit {
-  constructor(private back: BackendService, public router: Router) { }
+  constructor(
+    private back: BackendService,
+    public router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getTransArr();
@@ -37,7 +40,7 @@ export class MainInterfaceComponentComponent implements OnInit {
   }
 
   getTransArr() {
-    this.back.getTransaction().subscribe((arr) => {
+    this.back.getTransaction().subscribe(arr => {
       this.arrayTrans = arr;
     });
   }
@@ -66,6 +69,6 @@ export class MainInterfaceComponentComponent implements OnInit {
   }
 
   reportsButton() {
-    this.router.navigate(['/reports'])
+    this.router.navigate(['/reports']);
   }
 }

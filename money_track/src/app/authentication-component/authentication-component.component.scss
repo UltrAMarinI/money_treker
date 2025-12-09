@@ -1,4 +1,4 @@
-.example-container mat-form-field+mat-form-field {
+.example-container mat-form-field + mat-form-field {
   margin-left: 8px;
 }
 
@@ -23,7 +23,12 @@ input.example-right-align {
   width: 100vw;
   height: 100vh;
   background: #a1edeb;
-  background: linear-gradient(180deg, rgba(161, 237, 235, 1) 0%, rgba(191, 205, 255, 1) 50%, rgba(255, 255, 255, 1) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(161, 237, 235, 1) 0%,
+    rgba(191, 205, 255, 1) 50%,
+    rgba(255, 255, 255, 1) 100%
+  );
 }
 
 .dooble-button {

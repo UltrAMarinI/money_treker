@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TranslateService } from '../../../shared/services/translate.service';
 import { AsyncPipe } from '@angular/common';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatButtonModule} from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-header-component',
@@ -28,8 +28,7 @@ export class HeaderComponentComponent implements OnInit {
   // languageEng: boolean = false;
 
   ngOnInit(): void {
-
-    this.sbjService.userName.subscribe((name) => {
+    this.sbjService.userName.subscribe(name => {
       this.usrName = name;
     });
   }
