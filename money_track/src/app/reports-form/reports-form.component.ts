@@ -76,6 +76,7 @@ export class ReportsFormComponent {
     )?.value;
     return intOperation;
   }
+
   //TODO
   //сделать гетеры для ифов???
   //перестраивать на материал
