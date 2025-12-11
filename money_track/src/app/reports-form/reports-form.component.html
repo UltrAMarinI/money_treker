@@ -1,7 +1,7 @@
 <form [formGroup]="reportsForm" (ngSubmit)="onSubmit()">
   <div style="display: flex; flex-direction: column; width: 300px">
     <label>Дата подачи заявки</label>
-    <input formControlName="applicationDate" />
+    <input type="date" formControlName="applicationDate" />
     <label>Название компании</label>
     <input formControlName="companyName" />
     <label>ИНН</label>
@@ -28,7 +28,7 @@
       <option value="Налоговая отчетность">Налоговая отчетность</option>
     </select>
     <div style="display: flex; flex-direction: column">
-      @if(reportsType){
+      @if(reportsTypeValue){
       <label>Тип налогообложения</label>
       <label>Годовая налоговая декларация</label>
       <label>Декларация по НДС</label>
@@ -38,16 +38,32 @@
   <div style="display: flex; flex-direction: row">
     <label>Требуется ли проведение специального аудита?</label>
     <div>
-      <input type="checkbox" name="true" />
+      <input type="checkbox" name="true" formControlName="specialAuditNeeded" />
       <label>Да</label>
     </div>
+    @if (specialAuditValue) {
+    <label>Цель специального аудита?</label>
+    <input formControlName="auditPurpose" />
+    <label>Количество привлекаемых участников</label>
+    <input type="number" formControlName="additionalAuditorsCount" />
+    }
   </div>
   <div style="display: flex; flex-direction: row">
     <label>Имеет ли компания операции на международных рынках?</label>
     <div>
-      <input type="checkbox" name="true" />
+      <input
+        type="checkbox"
+        name="true"
+        formControlName="hasInternationalOperations"
+      />
       <label>Да</label>
     </div>
+    @if (InternationalOperationsValue) {
+    <label>Страны операций</label>
+    <input formControlName="countriesOfOperation" />
+    <label>Основная валюта операций</label>
+    <input formControlName="currencyOfTransactions" />
+    }
   </div>
   <button type="submit">Отправить</button>
 </form>

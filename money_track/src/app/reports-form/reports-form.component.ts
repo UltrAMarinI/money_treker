@@ -57,12 +57,26 @@ export class ReportsFormComponent {
     console.log(this.reportsForm.value);
   }
 
-  get reportsType() {
-    // let type: [] = this.reportsForm.get('selectedReportTypes')?.value();
-    // return type.includes('Налоговая отчетность');
-    return true;
+  get reportsTypeValue(): boolean {
+    let type: string[] = this.reportsForm.get('selectedReportTypes')?.value;
+    if (type) {
+      return type.includes('Налоговая отчетность');
+    }
+    return false;
   }
-  //TODO 
+
+  get specialAuditValue(): boolean {
+    let audit: boolean = this.reportsForm.get('specialAuditNeeded')?.value;
+    return audit;
+  }
+
+  get InternationalOperationsValue() {
+    let intOperation: boolean = this.reportsForm.get(
+      'hasInternationalOperations'
+    )?.value;
+    return intOperation;
+  }
+  //TODO
   //сделать гетеры для ифов???
   //перестраивать на материал
 }
