@@ -1,66 +1,109 @@
-<form [formGroup]="reportsForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="reportsForm">
   <div style="display: flex; flex-direction: column; width: 300px">
-    <label>Дата подачи заявки</label>
-    <input type="date" formControlName="applicationDate" />
-    <label>Название компании</label>
-    <input formControlName="companyName" />
-    <label>ИНН</label>
-    <input formControlName="taxId" />
-    <label>Отчетный период</label>
-    <input formControlName="reportingPeriod" />
-    <label>Контактное лицо</label>
-    <input formControlName="contactPerson" />
-    <label>Контактый телефон</label>
-    <input formControlName="contactPhone" />
-    <label>e-mail</label>
-    <input formControlName="contactEmail" />
+    <mat-form-field>
+      <mat-label>Дата подачи заявки</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="applicationDate" />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker> </mat-form-field
+    ><mat-form-field>
+      <mat-label>Название компании</mat-label>
+      <input matInput formControlName="companyName" /> </mat-form-field
+    ><mat-form-field>
+      <mat-label>ИНН</mat-label>
+      <input matInput formControlName="taxId" /> </mat-form-field
+    ><mat-form-field>
+      <mat-label>Отчетный период</mat-label>
+      <input matInput formControlName="reportingPeriod" /> </mat-form-field
+    ><mat-form-field>
+      <mat-label>Контактное лицо</mat-label>
+      <input matInput formControlName="contactPerson" /> </mat-form-field
+    ><mat-form-field>
+      <mat-label>Контактый телефон</mat-label>
+      <input matInput formControlName="contactPhone" /> </mat-form-field
+    ><mat-form-field>
+      <mat-label>e-mail</mat-label>
+      <input matInput formControlName="contactEmail" />
+    </mat-form-field>
   </div>
   <div>
-    <label>Какие виды отчетности необходимо проверить?</label>
-    <select formControlName="selectedReportTypes">
-      <option value="Бухгалтерский баланс">Бухгалтерский баланс</option>
-      <option value="Отчет о финансовых результатах">Отчет о финансовых результатах</option>
-      <option value="Отчет о движении денежных средств">Отчет о движении денежных средств</option>
-      <option value="Налоговая отчетность">Налоговая отчетность</option>
-    </select>
-    <div style="display: flex; flex-direction: column">
-      @if(reportsTypeValue){
-      <label>Тип налогообложения</label>
-      <label>Годовая налоговая декларация</label>
-      <label>Декларация по НДС</label>
+    <mat-form-field>
+      <mat-label>Какие виды отчетности необходимо проверить?</mat-label>
+      <mat-select formControlName="selectedReportTypes" multiple>
+        <mat-option value="Бухгалтерский баланс">Бухгалтерский баланс</mat-option>
+        <mat-option value="Отчет о финансовых результатах"
+          >Отчет о финансовых результатах</mat-option
+        >
+        <mat-option value="Отчет о движении денежных средств"
+          >Отчет о движении денежных средств</mat-option
+        >
+        <mat-option value="Налоговая отчетность">Налоговая отчетность</mat-option>
+      </mat-select>
+    </mat-form-field>
 
+    <div style="display: flex; flex-direction: column">
+      @if (reportsTypeValue) {
+        <mat-label>Тип налогообложения</mat-label>
+        <mat-radio-group formControlName="taxSystem">
+          <mat-radio-button value="OSHO" name="taxSystem"> <p>ОСНО</p></mat-radio-button>
+
+          <mat-radio-button value="YSN" name="taxSystem"><p>УСН</p></mat-radio-button>
+
+          <mat-radio-button value="AYSH" name="taxSystem"> <p>АУСН</p></mat-radio-button>
+
+          <mat-radio-button value="ESXH" name="taxSystem"> <p>ЕСХН</p></mat-radio-button>
+
+          <mat-radio-button value="PSH" name="taxSystem"> <p>ПСН</p></mat-radio-button>
+
+          <mat-radio-button value="HPD" name="taxSystem"> <p>НПД</p></mat-radio-button>
+        </mat-radio-group>
+        <span>
+          <mat-label>Годовая налоговая декларация</mat-label>
+          <mat-checkbox formControlName="annualTaxReturn"> </mat-checkbox
+        ></span>
+        <span>
+          <mat-label>Декларация по НДС</mat-label>
+          <mat-checkbox formControlName="vatReturns"> </mat-checkbox>
+        </span>
       }
     </div>
   </div>
-  <div style="display: flex; flex-direction: row">
-    <label>Требуется ли проведение специального аудита?</label>
-    <div>
-      <input type="checkbox" name="true" formControlName="specialAuditNeeded" />
-      <label>Да</label>
-    </div>
+  <div>
+    <span>
+      <mat-label>Требуется ли проведение специального аудита?</mat-label>
+      <mat-radio-group formControlName="specialAuditNeeded">
+        <mat-radio-button [value]="true">Да</mat-radio-button>
+        <mat-radio-button [value]="false">Нет</mat-radio-button>
+      </mat-radio-group>
+    </span>
     @if (specialAuditValue) {
-    <label>Цель специального аудита?</label>
-    <input formControlName="auditPurpose" />
-    <label>Количество привлекаемых участников</label>
-    <input type="number" formControlName="additionalAuditorsCount" />
+      <mat-form-field>
+        <mat-label>Цель специального аудита?</mat-label>
+        <input matInput formControlName="auditPurpose" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Количество привлекаемых участников</mat-label>
+        <input matInput type="number" formControlName="additionalAuditorsCount" />
+      </mat-form-field>
     }
   </div>
   <div style="display: flex; flex-direction: row">
-    <label>Имеет ли компания операции на международных рынках?</label>
-    <div>
-      <input
-        type="checkbox"
-        name="true"
-        formControlName="hasInternationalOperations"
-      />
-      <label>Да</label>
-    </div>
+    <mat-label>Имеет ли компания операции на международных рынках?</mat-label>
+    <mat-radio-group formControlName="hasInternationalOperations">
+      <mat-radio-button [value]="true">Да</mat-radio-button>
+      <mat-radio-button [value]="false">Нет</mat-radio-button>
+    </mat-radio-group>
     @if (InternationalOperationsValue) {
-    <label>Страны операций</label>
-    <input formControlName="countriesOfOperation" />
-    <label>Основная валюта операций</label>
-    <input formControlName="currencyOfTransactions" />
+      <mat-form-field>
+        <mat-label>Страны операций</mat-label>
+        <input matInput formControlName="countriesOfOperation" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Основная валюта операций</mat-label>
+        <input matInput formControlName="currencyOfTransactions" />
+      </mat-form-field>
     }
   </div>
-  <button type="submit">Отправить</button>
+  <button matButton="tonal" (click)="addReports()">Отправить</button>
 </form>
+<!-- [disabled]="reportsForm.invalid" -->

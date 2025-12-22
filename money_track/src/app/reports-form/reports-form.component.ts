@@ -1,19 +1,33 @@
-import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-  FormBuilder,
-} from '@angular/forms';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { FormGroup, ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-reports-form',
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    MatCheckboxModule,
+    MatButtonModule,
+  ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './reports-form.component.html',
   styleUrl: './reports-form.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
-export class ReportsFormComponent {
+export class ReportsFormComponent implements OnInit {
   reportsForm!: FormGroup;
   reportsTypeArray = [
     'Бухгалтерский баланс',
@@ -22,8 +36,29 @@ export class ReportsFormComponent {
     'Налоговая отчетность',
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
     this.createForm();
+    this.reportsForm.controls['selectedReportTypes'].valueChanges.subscribe(a => {
+      if (a && a.includes('Налоговая отчетность')) {
+        this.reportsForm.get('taxSystem')?.enable();
+        this.reportsForm.get('annualTaxReturn')?.enable();
+        this.reportsForm.get('vatReturns')?.enable();
+      }
+    });
+    this.reportsForm.controls['specialAuditNeeded'].valueChanges.subscribe(b => {
+      if (b === true) {
+        this.reportsForm.get('auditPurpose')?.enable();
+        this.reportsForm.get('additionalAuditorsCount')?.enable();
+      }
+    });
+    this.reportsForm.controls['hasInternationalOperations'].valueChanges.subscribe(c => {
+      if (c === true) {
+        this.reportsForm.get('countriesOfOperation')?.enable();
+        this.reportsForm.get('currencyOfTransactions')?.enable();
+      }
+    });
   }
 
   private createForm() {
@@ -43,22 +78,20 @@ export class ReportsFormComponent {
       hasInternationalOperations: [false, Validators.required],
 
       // Динамические поля (могут быть undefined)
-      taxSystem: [null],
-      annualTaxReturn: [null],
-      vatReturns: [null],
-      auditPurpose: [null],
-      additionalAuditorsCount: [null],
-      countriesOfOperation: [null],
-      currencyOfTransactions: [null],
+      taxSystem: [{ value: null, disabled: true }, Validators.required],
+      annualTaxReturn: [{ value: null, disabled: true }, Validators.required],
+      vatReturns: [{ value: null, disabled: true }, Validators.required],
+      auditPurpose: [{ value: null, disabled: true }, Validators.required],
+      additionalAuditorsCount: [{ value: null, disabled: true }, Validators.required],
+      countriesOfOperation: [{ value: null, disabled: true }, Validators.required],
+      currencyOfTransactions: [{ value: null, disabled: true }, Validators.required],
     });
   }
 
-  onSubmit() {
-    console.log(this.reportsForm.value);
-  }
+  //reportsTypeVal=signal(false);
 
   get reportsTypeValue(): boolean {
-    let type: string[] = this.reportsForm.get('selectedReportTypes')?.value;
+    const type: string[] = this.reportsForm.get('selectedReportTypes')?.value;
     if (type) {
       return type.includes('Налоговая отчетность');
     }
@@ -66,18 +99,76 @@ export class ReportsFormComponent {
   }
 
   get specialAuditValue(): boolean {
-    let audit: boolean = this.reportsForm.get('specialAuditNeeded')?.value;
+    const audit: boolean = this.reportsForm.get('specialAuditNeeded')?.value;
     return audit;
   }
 
   get InternationalOperationsValue() {
-    let intOperation: boolean = this.reportsForm.get(
-      'hasInternationalOperations'
-    )?.value;
+    const intOperation: boolean = this.reportsForm.get('hasInternationalOperations')?.value;
     return intOperation;
   }
 
-  //TODO
-  //сделать гетеры для ифов???
-  //перестраивать на материал
+  addReports() {
+    if (this.reportsForm.invalid) {
+      // Помечаем все контролы как touched чтобы показать ошибки
+      this.markAllAsTouched();
+      return;
+    }
+
+    console.log('Отправка данных:', this.reportsForm.getRawValue()); // Используйте getRawValue() для получения значений disabled полей
+
+    // Правильный сброс формы
+    this.resetFormProperly();
+  }
+
+  // Метод для правильного сброса формы
+  private resetFormProperly() {
+    // 1. Сначала сбрасываем значения
+    this.reportsForm.reset({
+      // Устанавливаем начальные значения для required полей
+      specialAuditNeeded: false,
+      hasInternationalOperations: false,
+      selectedReportTypes: [],
+    });
+
+    // 2. Отключаем динамические поля
+    this.disableDynamicFields();
+
+    // 3. Сбрасываем состояния touched/dirty
+    this.reportsForm.markAsPristine();
+    this.reportsForm.markAsUntouched();
+
+    // 4. Сбрасываем все контролы
+    Object.keys(this.reportsForm.controls).forEach(key => {
+      const control = this.reportsForm.get(key);
+      control?.markAsPristine();
+      control?.markAsUntouched();
+      control?.setErrors(null);
+    });
+  }
+
+  // Отключаем динамические поля после сброса
+  private disableDynamicFields() {
+    const dynamicFields = [
+      'taxSystem',
+      'annualTaxReturn',
+      'vatReturns',
+      'auditPurpose',
+      'additionalAuditorsCount',
+      'countriesOfOperation',
+      'currencyOfTransactions',
+    ];
+
+    dynamicFields.forEach(field => {
+      this.reportsForm.get(field)?.disable();
+      this.reportsForm.get(field)?.setValue(null);
+    });
+  }
+
+  // Помечаем все контролы как touched (для отображения ошибок)
+  private markAllAsTouched() {
+    this.reportsForm.markAllAsTouched(); // Встроенный метод Angular!
+  }
+
+  //нужна функция сбрасывающая значения всплывающих полей если триггеры поменяли значение
 }

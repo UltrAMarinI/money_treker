@@ -20,7 +20,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { Transaction } from '../../../shared/interface/transaction.interface';
 import { TranslateService } from '../../../shared/services/translate.service';
 import { AsyncPipe } from '@angular/common';
-import { c } from '../../../../node_modules/@angular/cdk/a11y-module.d--J1yhM7R';
 
 @Component({
   selector: 'app-add-transaction-component',
@@ -47,7 +46,7 @@ import { c } from '../../../../node_modules/@angular/cdk/a11y-module.d--J1yhM7R'
 })
 export class AddTransactionComponentComponent implements OnChanges {
   //форма добавления
-  @Output() addFormTranz = new EventEmitter<any>();
+  @Output() addFormTranz = new EventEmitter<Transaction>();
   @Output() editFormTrans = new EventEmitter<Transaction>();
   @Output() isEdit = new EventEmitter<boolean>();
   @Input() upForm!: Transaction | undefined;
