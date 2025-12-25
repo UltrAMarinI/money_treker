@@ -121,9 +121,8 @@ export class ReportsFormComponent implements OnInit {
     this.resetFormProperly();
   }
 
-  // Метод для правильного сброса формы
+  // Метод для сброса формы
   private resetFormProperly() {
-    // 1. Сначала сбрасываем значения
     this.reportsForm.reset({
       // Устанавливаем начальные значения для required полей
       specialAuditNeeded: false,
@@ -131,14 +130,14 @@ export class ReportsFormComponent implements OnInit {
       selectedReportTypes: [],
     });
 
-    // 2. Отключаем динамические поля
+    //  Отключаем динамические поля
     this.disableDynamicFields();
 
-    // 3. Сбрасываем состояния touched/dirty
+    // Сбрасываем состояния touched/dirty
     this.reportsForm.markAsPristine();
     this.reportsForm.markAsUntouched();
 
-    // 4. Сбрасываем все контролы
+    // Сбрасываем все контролы
     Object.keys(this.reportsForm.controls).forEach(key => {
       const control = this.reportsForm.get(key);
       control?.markAsPristine();
@@ -167,7 +166,7 @@ export class ReportsFormComponent implements OnInit {
 
   // Помечаем все контролы как touched (для отображения ошибок)
   private markAllAsTouched() {
-    this.reportsForm.markAllAsTouched(); // Встроенный метод Angular!
+    this.reportsForm.markAllAsTouched();
   }
 
   //нужна функция сбрасывающая значения всплывающих полей если триггеры поменяли значение
