@@ -8,6 +8,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
+import { BackendService } from '../../shared/services/backend';
 
 @Component({
   selector: 'app-reports-form',
@@ -36,7 +37,10 @@ export class ReportsFormComponent implements OnInit {
     'Налоговая отчетность',
   ];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private backend: BackendService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -115,7 +119,14 @@ export class ReportsFormComponent implements OnInit {
       return;
     }
 
-    console.log('Отправка данных:', this.reportsForm.getRawValue()); // Используйте getRawValue() для получения значений disabled полей
+    this.backend.createApplication(this.reportsForm.value).subscribe(a => {
+      console.log(a);
+    });
+    this.backend.getApplications().subscribe(a => {
+      console.log(a);
+    });
+
+    console.log('Отправка данных:', this.reportsForm.getRawValue());
 
     // Правильный сброс формы
     this.resetFormProperly();

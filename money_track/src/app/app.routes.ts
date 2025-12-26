@@ -13,6 +13,6 @@ export const routes: Routes = [
   },
   { path: Urls.auth, component: AuthenticationComponentComponent },
   { path: Urls.login, component: AuthenticationComponentComponent },
-  { path: Urls.reports, component: ReportsFormComponent },
+  { path: Urls.applications, component: ReportsFormComponent },
   { path: '**', redirectTo: Urls.login },
 ];

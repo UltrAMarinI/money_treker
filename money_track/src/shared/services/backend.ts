@@ -6,6 +6,8 @@ import { token } from '../interface/token.interface';
 import { Transaction } from '../interface/transaction.interface';
 import { AuditApplication } from '../interface/application.interface';
 
+type applicationPartical = Partial<AuditApplication>;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -39,32 +41,32 @@ export class BackendService {
   }
 
   // Получение всех заявок пользователя (включая черновики)
-  getApplications(): Observable<AuditApplication[]> {
-    return this.http.get<AuditApplication[]>(`${this.api}reports`);
+  getApplications(): Observable<applicationPartical[]> {
+    return this.http.get<applicationPartical[]>(`${this.api}applications`);
   }
 
   // Получение конкретной заявки по ID
-  getApplicationById(id: number): Observable<AuditApplication> {
-    return this.http.get<AuditApplication>(`${this.api}reports/${id}`);
+  getApplicationById(id: number): Observable<applicationPartical> {
+    return this.http.get<applicationPartical>(`${this.api}applications/${id}`);
   }
 
   // Создание новой заявки (можно создать пустой черновик)
-  createApplication(report: AuditApplication): Observable<void> {
-    return this.http.post<void>(`${this.api}reports`, report);
+  createApplication(report: applicationPartical): Observable<void> {
+    return this.http.post<void>(`${this.api}applications`, report);
   }
 
   // Обновление заявки (для черновиков - любые поля, для отправленных - ограничения)
-  updateApplication(report: AuditApplication): Observable<AuditApplication> {
-    return this.http.put<AuditApplication>(`${this.api}report/${report.id}`, report);
+  updateApplication(report: applicationPartical): Observable<applicationPartical> {
+    return this.http.put<applicationPartical>(`${this.api}applications/${report.id}`, report);
   }
 
   // Удаление заявки (только черновики)
-  deleteApplication(id: number): Observable<AuditApplication> {
-    return this.http.delete<AuditApplication>(`${this.api}reports/${id}`);
+  deleteApplication(id: number): Observable<applicationPartical> {
+    return this.http.delete<applicationPartical>(`${this.api}applications/${id}`);
   }
 
   // Отправка черновика на проверку (меняет статус на submitted)
-  submitApplication(report: AuditApplication): Observable<AuditApplication> {
-    return this.http.patch<AuditApplication>(`${this.api}reports`, report);
+  submitApplication(report: applicationPartical): Observable<applicationPartical> {
+    return this.http.patch<applicationPartical>(`${this.api}applications`, report);
   }
 }

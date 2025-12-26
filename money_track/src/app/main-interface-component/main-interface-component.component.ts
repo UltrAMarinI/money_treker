@@ -69,6 +69,6 @@ export class MainInterfaceComponentComponent implements OnInit {
   }
 
   reportsButton() {
-    this.router.navigate(['/reports']);
+    this.router.navigate(['/applications']);
   }
 }

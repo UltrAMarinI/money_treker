@@ -23,3 +23,4 @@ export interface AuditApplication {
   countriesOfOperation?: string[];
   currencyOfTransactions?: string;
 }
+
