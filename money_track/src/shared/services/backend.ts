@@ -46,7 +46,7 @@ export class BackendService {
   }
 
   // Получение конкретной заявки по ID
-  getApplicationById(id: number): Observable<applicationPartical> {
+  getApplicationById(id: string): Observable<applicationPartical> {
     return this.http.get<applicationPartical>(`${this.api}applications/${id}`);
   }
 
@@ -61,7 +61,7 @@ export class BackendService {
   }
 
   // Удаление заявки (только черновики)
-  deleteApplication(id: number): Observable<applicationPartical> {
+  deleteApplication(id: string): Observable<applicationPartical> {
     return this.http.delete<applicationPartical>(`${this.api}applications/${id}`);
   }
 

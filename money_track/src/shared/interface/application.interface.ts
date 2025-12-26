@@ -1,6 +1,6 @@
 export interface AuditApplication {
   // Статические поля
-  id?: number;
+  id?: string;
   applicationDate: Date;
   companyName: string;
   taxId: string;

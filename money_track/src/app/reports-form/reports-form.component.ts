@@ -49,18 +49,28 @@ export class ReportsFormComponent implements OnInit {
         this.reportsForm.get('taxSystem')?.enable();
         this.reportsForm.get('annualTaxReturn')?.enable();
         this.reportsForm.get('vatReturns')?.enable();
+      } else if (a && !a.includes('Налоговая отчетность')) {
+        this.reportsForm.get('taxSystem')?.reset();
+        this.reportsForm.get('annualTaxReturn')?.reset();
+        this.reportsForm.get('vatReturns')?.reset();
       }
     });
     this.reportsForm.controls['specialAuditNeeded'].valueChanges.subscribe(b => {
       if (b === true) {
         this.reportsForm.get('auditPurpose')?.enable();
         this.reportsForm.get('additionalAuditorsCount')?.enable();
+      } else {
+        this.reportsForm.get('auditPurpose')?.reset();
+        this.reportsForm.get('additionalAuditorsCount')?.reset();
       }
     });
     this.reportsForm.controls['hasInternationalOperations'].valueChanges.subscribe(c => {
       if (c === true) {
         this.reportsForm.get('countriesOfOperation')?.enable();
         this.reportsForm.get('currencyOfTransactions')?.enable();
+      } else {
+        this.reportsForm.get('countriesOfOperation')?.reset();
+        this.reportsForm.get('currencyOfTransactions')?.reset();
       }
     });
   }
@@ -120,10 +130,10 @@ export class ReportsFormComponent implements OnInit {
     }
 
     this.backend.createApplication(this.reportsForm.value).subscribe(a => {
-      console.log(a);
+      console.log('create form', a);
     });
     this.backend.getApplications().subscribe(a => {
-      console.log(a);
+      console.log('get form', a);
     });
 
     console.log('Отправка данных:', this.reportsForm.getRawValue());
