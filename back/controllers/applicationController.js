@@ -5,7 +5,7 @@ exports.getApplications = async (req, res, next) => {
   try {
     const { status } = req.query; // Опциональный фильтр по статусу
     const filter = { userId: req.userId };
-    
+
     if (status) {
       filter.status = status;
     }
@@ -21,9 +21,9 @@ exports.getApplications = async (req, res, next) => {
 exports.getApplicationById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const application = await Application.findOne({ 
-      _id: id, 
-      userId: req.userId 
+    const application = await Application.findOne({
+      _id: id,
+      userId: req.userId,
     });
 
     if (!application) {
@@ -41,8 +41,8 @@ exports.createApplication = async (req, res, next) => {
   try {
     const applicationData = {
       userId: req.userId,
-      status: 'draft',
-      ...req.body
+      status: "draft",
+      ...req.body,
     };
 
     const application = await Application.create(applicationData);
@@ -56,11 +56,11 @@ exports.createApplication = async (req, res, next) => {
 exports.updateApplication = async (req, res, next) => {
   try {
     const { id } = req.params;
-    
+
     // Находим заявку и проверяем права доступа
-    const existingApplication = await Application.findOne({ 
-      _id: id, 
-      userId: req.userId 
+    const existingApplication = await Application.findOne({
+      _id: id,
+      userId: req.userId,
     });
 
     if (!existingApplication) {
@@ -68,9 +68,9 @@ exports.updateApplication = async (req, res, next) => {
     }
 
     // Если заявка уже отправлена, ограничиваем редактирование
-    if (existingApplication.status !== 'draft') {
-      return res.status(400).json({ 
-        message: "Cannot update submitted application" 
+    if (existingApplication.status !== "draft") {
+      return res.status(400).json({
+        message: "Cannot update submitted application",
       });
     }
 
@@ -90,10 +90,10 @@ exports.updateApplication = async (req, res, next) => {
 exports.deleteApplication = async (req, res, next) => {
   try {
     const { id } = req.params;
-    
-    const application = await Application.findOne({ 
-      _id: id, 
-      userId: req.userId 
+
+    const application = await Application.findOne({
+      _id: id,
+      userId: req.userId,
     });
 
     if (!application) {
@@ -101,9 +101,9 @@ exports.deleteApplication = async (req, res, next) => {
     }
 
     // Можно удалять только черновики
-    if (application.status !== 'draft') {
-      return res.status(400).json({ 
-        message: "Cannot delete submitted application" 
+    if (application.status !== "draft") {
+      return res.status(400).json({
+        message: "Cannot delete submitted application",
       });
     }
 
@@ -118,46 +118,51 @@ exports.deleteApplication = async (req, res, next) => {
 exports.submitApplication = async (req, res, next) => {
   try {
     const { id } = req.params;
-    
-    const application = await Application.findOne({ 
-      _id: id, 
-      userId: req.userId 
+
+    const application = await Application.findOne({
+      _id: id,
+      userId: req.userId,
     });
 
     if (!application) {
       return res.status(404).json({ message: "Application not found" });
     }
 
-    if (application.status !== 'draft') {
-      return res.status(400).json({ 
-        message: "Application is already submitted" 
+    if (application.status !== "draft") {
+      return res.status(400).json({
+        message: "Application is already submitted",
       });
     }
 
     // Здесь можно добавить валидацию обязательных полей перед отправкой
-    const requiredFields = ['companyName', 'taxId', 'reportingPeriod', 'contactPerson'];
-    const missingFields = requiredFields.filter(field => !application[field]);
-    
+    const requiredFields = [
+      "companyName",
+      "taxId",
+      "reportingPeriod",
+      "contactPerson",
+    ];
+    const missingFields = requiredFields.filter((field) => !application[field]);
+
     if (missingFields.length > 0) {
       return res.status(400).json({
         message: "Missing required fields",
-        missingFields
+        missingFields,
       });
     }
 
     const submittedApplication = await Application.findOneAndUpdate(
       { _id: id, userId: req.userId },
-      { 
-        status: 'submitted',
+      {
+        status: "submitted",
         submittedAt: Date.now(),
-        updatedAt: Date.now()
+        updatedAt: Date.now(),
       },
       { new: true }
     );
 
     res.json({
       message: "Application submitted successfully",
-      application: submittedApplication
+      application: submittedApplication,
     });
   } catch (err) {
     next(err);

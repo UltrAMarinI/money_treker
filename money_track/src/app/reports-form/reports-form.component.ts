@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -9,6 +9,8 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { BackendService } from '../../shared/services/backend';
+import { RouterLink } from '@angular/router';
+import { debounceTime, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-reports-form',
@@ -21,6 +23,7 @@ import { BackendService } from '../../shared/services/backend';
     MatDatepickerModule,
     MatCheckboxModule,
     MatButtonModule,
+    RouterLink,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './reports-form.component.html',
@@ -28,7 +31,7 @@ import { BackendService } from '../../shared/services/backend';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class ReportsFormComponent implements OnInit {
+export class ReportsFormComponent implements OnInit, OnDestroy {
   reportsForm!: FormGroup;
   reportsTypeArray = [
     'Бухгалтерский баланс',
@@ -36,6 +39,7 @@ export class ReportsFormComponent implements OnInit {
     'Отчет о движении денежных средств',
     'Налоговая отчетность',
   ];
+  formWasChanged = false;
 
   constructor(
     private fb: FormBuilder,
@@ -44,6 +48,9 @@ export class ReportsFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
+    this.reportsForm.valueChanges.subscribe(() => {
+      this.formWasChanged = true;
+    });
     this.reportsForm.controls['selectedReportTypes'].valueChanges.subscribe(a => {
       if (a && a.includes('Налоговая отчетность')) {
         this.reportsForm.get('taxSystem')?.enable();
@@ -103,8 +110,10 @@ export class ReportsFormComponent implements OnInit {
   }
 
   //reportsTypeVal=signal(false);
+  //TODO
+  //переписать на сигналы геттеры
 
-  get reportsTypeValue(): boolean {
+  public get reportsTypeValue(): boolean {
     const type: string[] = this.reportsForm.get('selectedReportTypes')?.value;
     if (type) {
       return type.includes('Налоговая отчетность');
@@ -112,49 +121,49 @@ export class ReportsFormComponent implements OnInit {
     return false;
   }
 
-  get specialAuditValue(): boolean {
+  public get specialAuditValue(): boolean {
     const audit: boolean = this.reportsForm.get('specialAuditNeeded')?.value;
     return audit;
   }
 
-  get InternationalOperationsValue() {
+  public get InternationalOperationsValue() {
     const intOperation: boolean = this.reportsForm.get('hasInternationalOperations')?.value;
     return intOperation;
   }
 
-  addReports() {
+  public addReports() {
     if (this.reportsForm.invalid) {
-      // Помечаем все контролы как touched чтобы показать ошибки
-      this.markAllAsTouched();
+      this.reportsForm.markAllAsTouched();
       return;
     }
+    this.backend
+      .createApplication(this.reportsForm.value)
+      .pipe(
+        switchMap((postResponse: any) => {
+          debounceTime(5000);
 
-    this.backend.createApplication(this.reportsForm.value).subscribe(a => {
-      console.log('create form', a);
-    });
-    this.backend.getApplications().subscribe(a => {
-      console.log('get form', a);
-    });
+          console.log('результат пост', postResponse);
+          return this.backend.submitApplication(postResponse._id);
+        })
+      )
+      .subscribe(a => {
+        console.log('результат запроса', a);
+        this.resetFormProperly();
+      });
 
     console.log('Отправка данных:', this.reportsForm.getRawValue());
-
-    // Правильный сброс формы
-    this.resetFormProperly();
   }
 
   // Метод для сброса формы
   private resetFormProperly() {
     this.reportsForm.reset({
-      // Устанавливаем начальные значения для required полей
       specialAuditNeeded: false,
       hasInternationalOperations: false,
       selectedReportTypes: [],
     });
 
-    //  Отключаем динамические поля
     this.disableDynamicFields();
 
-    // Сбрасываем состояния touched/dirty
     this.reportsForm.markAsPristine();
     this.reportsForm.markAsUntouched();
 
@@ -185,10 +194,14 @@ export class ReportsFormComponent implements OnInit {
     });
   }
 
-  // Помечаем все контролы как touched (для отображения ошибок)
-  private markAllAsTouched() {
-    this.reportsForm.markAllAsTouched();
-  }
+  ngOnDestroy(): void {
+    if (!this.formWasChanged && !this.reportsForm.dirty) {
+      console.log('форма не отправлена');
 
-  //нужна функция сбрасывающая значения всплывающих полей если триггеры поменяли значение
+      return;
+    }
+    this.backend.createApplication(this.reportsForm.value).subscribe(a => {
+      console.log('удаление компонента', a);
+    });
+  }
 }

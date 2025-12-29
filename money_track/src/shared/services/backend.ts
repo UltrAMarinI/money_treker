@@ -66,7 +66,7 @@ export class BackendService {
   }
 
   // Отправка черновика на проверку (меняет статус на submitted)
-  submitApplication(report: applicationPartical): Observable<applicationPartical> {
-    return this.http.patch<applicationPartical>(`${this.api}applications`, report);
+  submitApplication(id: string): Observable<applicationPartical> {
+    return this.http.post<applicationPartical>(`${this.api}applications/${id}/submit`, {});
   }
 }
