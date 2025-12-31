@@ -3,4 +3,5 @@ export enum Urls {
   login = 'login',
   main = 'main',
   reports = 'reports',
+  list = 'list',
 }

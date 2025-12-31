@@ -4,6 +4,7 @@ import { MainInterfaceComponentComponent } from './main-interface-component/main
 import { AuthenticationComponentComponent } from './authentication-component/authentication-component.component';
 import { mainPageGuard } from '../shared/guard/main-page.guard';
 import { ReportsFormComponent } from './reports-form/reports-form.component';
+import { ReportsListComponent } from './reports-list/reports-list.component';
 
 export const routes: Routes = [
   {
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: Urls.auth, component: AuthenticationComponentComponent },
   { path: Urls.login, component: AuthenticationComponentComponent },
   { path: Urls.reports, component: ReportsFormComponent },
+  { path: Urls.list, component: ReportsListComponent },
   { path: '**', redirectTo: Urls.login },
 ];

@@ -7,9 +7,9 @@ import { BehaviorSubject } from 'rxjs';
 export class SubjectService {
   constructor() {}
 
-  public userName = new BehaviorSubject<any>('');
+  public userName = new BehaviorSubject<string>('');
 
-  userNameSetValue(value: any) {
+  userNameSetValue(value: string) {
     this.userName.next(value);
   }
 }

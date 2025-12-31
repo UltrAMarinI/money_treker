@@ -51,22 +51,22 @@ export class BackendService {
   }
 
   // Создание новой заявки (можно создать пустой черновик)
-  createApplication(report: applicationPartical): Observable<void> {
-    return this.http.post<void>(`${this.api}applications`, report);
+  createApplication(report: applicationPartical): Observable<AuditApplication> {
+    return this.http.post<AuditApplication>(`${this.api}applications`, report);
   }
 
   // Обновление заявки (для черновиков - любые поля, для отправленных - ограничения)
   updateApplication(report: applicationPartical): Observable<applicationPartical> {
-    return this.http.put<applicationPartical>(`${this.api}applications/${report.id}`, report);
+    return this.http.put<applicationPartical>(`${this.api}applications/${report._id}`, report);
   }
 
   // Удаление заявки (только черновики)
-  deleteApplication(id: string): Observable<applicationPartical> {
-    return this.http.delete<applicationPartical>(`${this.api}applications/${id}`);
+  deleteApplication(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.api}applications/${id}`);
   }
 
   // Отправка черновика на проверку (меняет статус на submitted)
-  submitApplication(id: string): Observable<applicationPartical> {
-    return this.http.post<applicationPartical>(`${this.api}applications/${id}/submit`, {});
+  submitApplication(id: string, report: applicationPartical): Observable<applicationPartical> {
+    return this.http.patch<applicationPartical>(`${this.api}applications/${id}/submit`, report);
   }
 }

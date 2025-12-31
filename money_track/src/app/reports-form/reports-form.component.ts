@@ -10,7 +10,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { BackendService } from '../../shared/services/backend';
 import { RouterLink } from '@angular/router';
-import { debounceTime, switchMap } from 'rxjs';
+import { AuditApplication } from '../../shared/interface/application.interface';
+import { of, switchMap } from 'rxjs';
+import { ReportService } from '../../shared/services/report.service';
 
 @Component({
   selector: 'app-reports-form',
@@ -40,10 +42,12 @@ export class ReportsFormComponent implements OnInit, OnDestroy {
     'Налоговая отчетность',
   ];
   formWasChanged = false;
+  updateForm!: Partial<AuditApplication>;
 
   constructor(
     private fb: FormBuilder,
-    private backend: BackendService
+    private backend: BackendService,
+    private subjectService: ReportService
   ) {}
 
   ngOnInit(): void {
@@ -63,7 +67,7 @@ export class ReportsFormComponent implements OnInit, OnDestroy {
       }
     });
     this.reportsForm.controls['specialAuditNeeded'].valueChanges.subscribe(b => {
-      if (b === true) {
+      if (b) {
         this.reportsForm.get('auditPurpose')?.enable();
         this.reportsForm.get('additionalAuditorsCount')?.enable();
       } else {
@@ -72,12 +76,20 @@ export class ReportsFormComponent implements OnInit, OnDestroy {
       }
     });
     this.reportsForm.controls['hasInternationalOperations'].valueChanges.subscribe(c => {
-      if (c === true) {
+      if (c) {
         this.reportsForm.get('countriesOfOperation')?.enable();
         this.reportsForm.get('currencyOfTransactions')?.enable();
       } else {
         this.reportsForm.get('countriesOfOperation')?.reset();
         this.reportsForm.get('currencyOfTransactions')?.reset();
+      }
+    });
+
+    this.subjectService.upReport.subscribe(upForm => {
+      this.updateForm = upForm as Partial<AuditApplication>;
+      console.log('переменная формы', this.updateForm);
+      if (upForm) {
+        this.setFormValues(upForm);
       }
     });
   }
@@ -139,19 +151,25 @@ export class ReportsFormComponent implements OnInit, OnDestroy {
     this.backend
       .createApplication(this.reportsForm.value)
       .pipe(
-        switchMap((postResponse: any) => {
-          debounceTime(5000);
-
+        switchMap((postResponse: AuditApplication) => {
           console.log('результат пост', postResponse);
-          return this.backend.submitApplication(postResponse._id);
+          if (postResponse._id) {
+            return this.backend.submitApplication(postResponse._id, postResponse);
+          } else {
+            return of({});
+          }
         })
       )
       .subscribe(a => {
-        console.log('результат запроса', a);
+        console.log('результат запроса проверки', a);
         this.resetFormProperly();
       });
 
     console.log('Отправка данных:', this.reportsForm.getRawValue());
+  }
+
+  setFormValues(data: Partial<AuditApplication>) {
+    this.reportsForm.patchValue(data);
   }
 
   // Метод для сброса формы

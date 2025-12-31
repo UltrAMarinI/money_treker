@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "money-track",
   "version": "0.0.0",
   "scripts": {
@@ -38,6 +38,7 @@
     "@angular-eslint/builder": "^16.3.1",
     "@angular-eslint/eslint-plugin": "^21.1.0",
     "@angular-eslint/eslint-plugin-template": "^21.1.0",
+    "@angular-eslint/schematics": "^20.4.0",
     "@angular-eslint/template-parser": "^21.1.0",
     "@angular/build": "^20.1.4",
     "@angular/cli": "^20.1.4",
