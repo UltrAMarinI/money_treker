@@ -1,4 +1,5 @@
 export interface AuditApplication {
+  status: ['draft', 'submitted', 'in_progress', 'completed'];
   // Статические поля
   _id?: string;
   applicationDate: Date;
@@ -23,4 +24,3 @@ export interface AuditApplication {
   countriesOfOperation?: string[];
   currencyOfTransactions?: string;
 }
-

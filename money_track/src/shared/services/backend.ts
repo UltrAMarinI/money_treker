@@ -56,8 +56,8 @@ export class BackendService {
   }
 
   // Обновление заявки (для черновиков - любые поля, для отправленных - ограничения)
-  updateApplication(report: applicationPartical): Observable<applicationPartical> {
-    return this.http.put<applicationPartical>(`${this.api}applications/${report._id}`, report);
+  updateApplication(id: string, report: applicationPartical): Observable<applicationPartical> {
+    return this.http.put<applicationPartical>(`${this.api}applications/${id}`, report);
   }
 
   // Удаление заявки (только черновики)

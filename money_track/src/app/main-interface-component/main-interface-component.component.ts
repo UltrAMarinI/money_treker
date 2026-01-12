@@ -6,6 +6,7 @@ import { BackendService } from '../../shared/services/backend';
 import { Transaction } from '../../shared/interface/transaction.interface';
 import { GraphicsTransactionComponentComponent } from './graphics-transaction-component/graphics-transaction-component.component';
 import { Router, RouterModule } from '@angular/router';
+import { MatAnchor } from "@angular/material/button";
 
 @Component({
   selector: 'app-main-interface-component',
@@ -15,7 +16,8 @@ import { Router, RouterModule } from '@angular/router';
     ListTransactionComponentComponent,
     GraphicsTransactionComponentComponent,
     RouterModule,
-  ],
+    MatAnchor
+],
   templateUrl: './main-interface-component.component.html',
   styleUrl: './main-interface-component.component.scss',
   standalone: true,

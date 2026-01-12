@@ -11,8 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { BackendService } from '../../shared/services/backend';
 import { RouterLink } from '@angular/router';
 import { AuditApplication } from '../../shared/interface/application.interface';
-import { of, switchMap } from 'rxjs';
+import { catchError, of, switchMap } from 'rxjs';
 import { ReportService } from '../../shared/services/report.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-reports-form',
@@ -87,7 +88,6 @@ export class ReportsFormComponent implements OnInit, OnDestroy {
 
     this.subjectService.upReport.subscribe(upForm => {
       this.updateForm = upForm as Partial<AuditApplication>;
-      console.log('переменная формы', this.updateForm);
       if (upForm) {
         this.setFormValues(upForm);
       }
@@ -152,7 +152,6 @@ export class ReportsFormComponent implements OnInit, OnDestroy {
       .createApplication(this.reportsForm.value)
       .pipe(
         switchMap((postResponse: AuditApplication) => {
-          console.log('результат пост', postResponse);
           if (postResponse._id) {
             return this.backend.submitApplication(postResponse._id, postResponse);
           } else {
@@ -160,12 +159,9 @@ export class ReportsFormComponent implements OnInit, OnDestroy {
           }
         })
       )
-      .subscribe(a => {
-        console.log('результат запроса проверки', a);
+      .subscribe(() => {
         this.resetFormProperly();
       });
-
-    console.log('Отправка данных:', this.reportsForm.getRawValue());
   }
 
   setFormValues(data: Partial<AuditApplication>) {
@@ -214,12 +210,25 @@ export class ReportsFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (!this.formWasChanged && !this.reportsForm.dirty) {
-      console.log('форма не отправлена');
-
       return;
     }
-    this.backend.createApplication(this.reportsForm.value).subscribe(a => {
-      console.log('удаление компонента', a);
-    });
+    if (this.updateForm._id) {
+      this.subjectService.editChange(true);
+      this.backend
+        .updateApplication(this.updateForm._id, this.reportsForm.value)
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            this.subjectService.editChange(false);
+            console.log(error);
+
+            return of(() => null);
+          })
+        )
+        .subscribe(() => {
+          this.subjectService.editChange(false);
+        });
+    } else {
+      this.backend.createApplication(this.reportsForm.value).subscribe(() => {});
+    }
   }
 }

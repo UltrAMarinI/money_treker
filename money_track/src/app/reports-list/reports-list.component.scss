@@ -1,0 +1,67 @@
+section {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    180deg,
+    rgba(161, 237, 235, 1) 0%,
+    rgba(191, 205, 255, 1) 50%,
+    rgba(255, 255, 255, 1) 100%
+  );
+}
+
+.display-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.display-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: bolder;
+  margin-left: 50rem;
+}
+
+.main {
+  width: 90%;
+  height: 5rem;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 10px;
+  border-radius: 30px;
+}
+
+.is-submit {
+  @extend .main;
+  background-color: rgba(25, 196, 167, 0.384);
+}
+
+.isDraft {
+  @extend .main;
+  background-color: rgba(98, 36, 146, 0.253);
+}
+
+.description {
+  background-color: #dae2f9;
+  border-radius: 30px;
+  height: 4rem;
+  width: 30rem;
+  padding: 13px;
+}
+
+.center-display {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.bold {
+  font-weight: bold;
+}

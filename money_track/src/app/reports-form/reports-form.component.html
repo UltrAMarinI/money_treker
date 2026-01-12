@@ -1,47 +1,47 @@
-<form [formGroup]="reportsForm">
-  <div style="display: flex; flex-direction: column; width: 300px">
-    <mat-form-field>
-      <mat-label>Дата подачи заявки</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="applicationDate" />
-      <mat-hint>MM/DD/YYYY</mat-hint>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker> </mat-form-field
-    ><mat-form-field>
-      <mat-label>Название компании</mat-label>
-      <input matInput formControlName="companyName" /> </mat-form-field
-    ><mat-form-field>
-      <mat-label>ИНН</mat-label>
-      <input matInput formControlName="taxId" /> </mat-form-field
-    ><mat-form-field>
-      <mat-label>Отчетный период</mat-label>
-      <input matInput formControlName="reportingPeriod" /> </mat-form-field
-    ><mat-form-field>
-      <mat-label>Контактное лицо</mat-label>
-      <input matInput formControlName="contactPerson" /> </mat-form-field
-    ><mat-form-field>
-      <mat-label>Контактый телефон</mat-label>
-      <input matInput formControlName="contactPhone" /> </mat-form-field
-    ><mat-form-field>
-      <mat-label>e-mail</mat-label>
-      <input matInput formControlName="contactEmail" />
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field>
-      <mat-label>Какие виды отчетности необходимо проверить?</mat-label>
-      <mat-select formControlName="selectedReportTypes" multiple>
-        <mat-option value="Бухгалтерский баланс">Бухгалтерский баланс</mat-option>
-        <mat-option value="Отчет о финансовых результатах"
-          >Отчет о финансовых результатах</mat-option
-        >
-        <mat-option value="Отчет о движении денежных средств"
-          >Отчет о движении денежных средств</mat-option
-        >
-        <mat-option value="Налоговая отчетность">Налоговая отчетность</mat-option>
-      </mat-select>
-    </mat-form-field>
+<section>
+  <form class="display-column inputs-center" [formGroup]="reportsForm">
+    <div class="display-column">
+      <mat-form-field class="width-22rem">
+        <mat-label>Дата подачи заявки</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="applicationDate" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker> </mat-form-field
+      ><mat-form-field class="width-22rem">
+        <mat-label>Название компании</mat-label>
+        <input matInput formControlName="companyName" /> </mat-form-field
+      ><mat-form-field class="width-22rem">
+        <mat-label>ИНН</mat-label>
+        <input matInput formControlName="taxId" /> </mat-form-field
+      ><mat-form-field class="width-22rem">
+        <mat-label>Отчетный период</mat-label>
+        <input matInput formControlName="reportingPeriod" /> </mat-form-field
+      ><mat-form-field class="width-22rem">
+        <mat-label>Контактное лицо</mat-label>
+        <input matInput formControlName="contactPerson" /> </mat-form-field
+      ><mat-form-field class="width-22rem">
+        <mat-label>Контактый телефон</mat-label>
+        <input matInput formControlName="contactPhone" /> </mat-form-field
+      ><mat-form-field class="width-22rem">
+        <mat-label>e-mail</mat-label>
+        <input matInput formControlName="contactEmail" />
+      </mat-form-field>
 
-    <div style="display: flex; flex-direction: column">
+      <mat-form-field class="width-22rem">
+        <mat-label>Какие виды отчетности необходимо проверить?</mat-label>
+        <mat-select formControlName="selectedReportTypes" multiple>
+          <mat-option value="Бухгалтерский баланс">Бухгалтерский баланс</mat-option>
+          <mat-option value="Отчет о финансовых результатах"
+            >Отчет о финансовых результатах</mat-option
+          >
+          <mat-option value="Отчет о движении денежных средств"
+            >Отчет о движении денежных средств</mat-option
+          >
+          <mat-option value="Налоговая отчетность">Налоговая отчетность</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="display-column width-22rem">
       @if (reportsTypeValue) {
         <mat-label>Тип налогообложения</mat-label>
         <mat-radio-group formControlName="taxSystem">
@@ -67,49 +67,59 @@
         </span>
       }
     </div>
+
+    <div>
+      <div class="display-row width-22rem">
+        <mat-label>Требуется ли проведение специального аудита?</mat-label>
+        <mat-radio-group formControlName="specialAuditNeeded" class="display-column">
+          <mat-radio-button [value]="true">Да</mat-radio-button>
+          <mat-radio-button [value]="false">Нет</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      @if (specialAuditValue) {
+        <div class="display-column width-22rem">
+          <mat-form-field>
+            <mat-label>Цель специального аудита?</mat-label>
+            <input matInput formControlName="auditPurpose" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Количество привлекаемых участников</mat-label>
+            <input matInput type="number" formControlName="additionalAuditorsCount" />
+          </mat-form-field>
+        </div>
+      }
+    </div>
+    <div class="display-column width-22rem">
+      <div class="display-row">
+        <mat-label>Имеет ли компания операции на международных рынках?</mat-label>
+        <mat-radio-group formControlName="hasInternationalOperations">
+          <mat-radio-button [value]="true">Да</mat-radio-button>
+          <mat-radio-button [value]="false">Нет</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      @if (InternationalOperationsValue) {
+        <div class="display-column width-22rem">
+          <mat-form-field>
+            <mat-label>Страны операций</mat-label>
+            <input matInput formControlName="countriesOfOperation" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Основная валюта операций</mat-label>
+            <input matInput formControlName="currencyOfTransactions" />
+          </mat-form-field>
+        </div>
+      }
+    </div>
+  </form>
+  <div class="union-buttons">
+    <button matButton="tonal">
+      <a style="color: #3e4759; text-decoration: none" routerLink="/main">Назад</a>
+    </button>
+
+    <button matButton="tonal" (click)="addReports()">Отправить на проверку</button>
+
+    <button matButton="tonal">
+      <a style="color: #3e4759; text-decoration: none" routerLink="/list">К черновикам</a>
+    </button>
   </div>
-  <div>
-    <span>
-      <mat-label>Требуется ли проведение специального аудита?</mat-label>
-      <mat-radio-group formControlName="specialAuditNeeded">
-        <mat-radio-button [value]="true">Да</mat-radio-button>
-        <mat-radio-button [value]="false">Нет</mat-radio-button>
-      </mat-radio-group>
-    </span>
-    @if (specialAuditValue) {
-      <mat-form-field>
-        <mat-label>Цель специального аудита?</mat-label>
-        <input matInput formControlName="auditPurpose" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Количество привлекаемых участников</mat-label>
-        <input matInput type="number" formControlName="additionalAuditorsCount" />
-      </mat-form-field>
-    }
-  </div>
-  <div style="display: flex; flex-direction: row">
-    <mat-label>Имеет ли компания операции на международных рынках?</mat-label>
-    <mat-radio-group formControlName="hasInternationalOperations">
-      <mat-radio-button [value]="true">Да</mat-radio-button>
-      <mat-radio-button [value]="false">Нет</mat-radio-button>
-    </mat-radio-group>
-    @if (InternationalOperationsValue) {
-      <mat-form-field>
-        <mat-label>Страны операций</mat-label>
-        <input matInput formControlName="countriesOfOperation" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Основная валюта операций</mat-label>
-        <input matInput formControlName="currencyOfTransactions" />
-      </mat-form-field>
-    }
-  </div>
-  <button matButton="tonal" (click)="addReports()">Отправить на проверку</button>
-  <button matButton="tonal">
-    <a routerLink="/main">Назад</a>
-  </button>
-   <button matButton="tonal">
-    <a routerLink="/list">К черновикам</a>
-  </button>
-</form>
-<!-- [disabled]="reportsForm.invalid" -->
+</section>

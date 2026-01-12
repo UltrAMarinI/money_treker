@@ -1,10 +1,41 @@
-@for (item of reportArray; track $index) {
-  <div style="display: flex; flex-direction: column; margin-bottom: 10px">
-    <div>{{ item.contactPhone }}</div>
-    <div>
-      <button (click)="item._id && editReport(item._id)">Редактировать</button>
-      <button (click)="item._id && deleteReport(item._id)">Удалить</button>
-    </div>
+<section>
+  <div class="title">Список всех заявлений</div>
+  <div class="center-display">
+    @for (item of reportArray; track $index) {
+      <div class="is-submit" [ngClass]="{ isDraft: item.status && item.status.includes('draft') }">
+        <div style="width: 100px" class="description center-display">
+          <div class="bold">Статус:</div>
+          @if (item.status && item.status.includes('draft')) {
+            <mat-label>Черновик</mat-label>
+          } @else {
+            <mat-label>Заявка</mat-label>
+          }
+        </div>
+        <div class="center-display description">
+          <div class="display-row">
+            <div class="bold">Дата подачи заявки:</div>
+            {{ item.applicationDate | date: 'dd.MM.yyyy' }}
+          </div>
+          <div class="display-row">
+            <div class="bold">Название компании:</div>
+            {{ item.companyName }}
+          </div>
+        </div>
+        <div class="display-column">
+          <button style="margin-bottom: 5px;" matButton="tonal" (click)="item._id && editReport(item._id)">
+            Редактировать
+          </button>
+          <button matButton="tonal" (click)="item._id && deleteReport(item._id)">Удалить</button>
+        </div>
+      </div>
+    }
   </div>
-}
-<button><a routerLink="/reports">Добавить заявку</a></button>
+  <div style="display: flex; justify-content: center">
+    <button matButton="tonal">
+      <a style="color: #3e4759; text-decoration: none" routerLink="/reports">Добавить заявку</a>
+    </button>
+    <button matButton="tonal">
+      <a style="color: #3e4759; text-decoration: none" routerLink="/main">Главная</a>
+    </button>
+  </div>
+</section>

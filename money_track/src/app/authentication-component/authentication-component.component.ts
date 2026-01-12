@@ -15,7 +15,7 @@ import {
 import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BackendService } from '../../shared/services/backend';
-import { SubjectService } from '../../shared/services/subject.service';
+import { NameSubjectService } from '../../shared/services/nameSubject.service';
 
 @Component({
   selector: 'app-authentication-component',
@@ -48,7 +48,7 @@ export class AuthenticationComponentComponent implements OnInit {
     private route: ActivatedRoute,
     private backendService: BackendService,
     private router: Router,
-    private sbjService: SubjectService
+    private sbjService: NameSubjectService
   ) {}
 
   @HostListener('document:keydown.enter', ['$event'])

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SubjectService } from '../../../shared/services/subject.service';
+import { NameSubjectService } from '../../../shared/services/nameSubject.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TranslateService } from '../../../shared/services/translate.service';
@@ -18,7 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class HeaderComponentComponent implements OnInit {
   //шапка с языками и именем пользователя и выходом
   constructor(
-    private sbjService: SubjectService,
+    private sbjService: NameSubjectService,
     private router: Router,
     public langService: TranslateService
   ) {}
