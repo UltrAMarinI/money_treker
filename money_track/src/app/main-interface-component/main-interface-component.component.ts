@@ -6,7 +6,9 @@ import { BackendService } from '../../shared/services/backend';
 import { Transaction } from '../../shared/interface/transaction.interface';
 import { GraphicsTransactionComponentComponent } from './graphics-transaction-component/graphics-transaction-component.component';
 import { Router, RouterModule } from '@angular/router';
-import { MatAnchor } from "@angular/material/button";
+import { MatAnchor } from '@angular/material/button';
+import { addItems, loadItems } from '../store/feature/feature.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-main-interface-component',
@@ -16,20 +18,28 @@ import { MatAnchor } from "@angular/material/button";
     ListTransactionComponentComponent,
     GraphicsTransactionComponentComponent,
     RouterModule,
-    MatAnchor
-],
+    MatAnchor,
+  ],
   templateUrl: './main-interface-component.component.html',
   styleUrl: './main-interface-component.component.scss',
   standalone: true,
 })
 export class MainInterfaceComponentComponent implements OnInit {
+  message = '';
+
   constructor(
     private back: BackendService,
-    public router: Router
+    public router: Router,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
     this.getTransArr();
+
+    this.store.subscribe(state => {
+      console.log('State:', state);
+      this.message = JSON.stringify(state);
+    });
   }
 
   arrayTrans: Transaction[] = [];
@@ -72,5 +82,9 @@ export class MainInterfaceComponentComponent implements OnInit {
 
   reportsButton() {
     this.router.navigate(['/reports']);
+  }
+
+  stateButton() {
+    this.store.dispatch(addItems({ item: 1 }));
   }
 }
