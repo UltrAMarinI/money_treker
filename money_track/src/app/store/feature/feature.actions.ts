@@ -1,4 +1,4 @@
-import { Action } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import { Transaction } from '../../../shared/interface/transaction.interface';
 
 export enum FeatureActionsEnum {
@@ -7,30 +7,30 @@ export enum FeatureActionsEnum {
   loadItemsFailure = '[Feature] Load Items Failture',
 }
 
-export class loadTransactions implements Action {
-  readonly type = FeatureActionsEnum.loadItemsFailure;
-}
+// export class loadTransactions implements Action {
+//   readonly type = FeatureActionsEnum.loadItemsFailure;
+// }
 
-export class writeToReduser implements Action {
-  readonly type = FeatureActionsEnum.writeToReduser;
-  constructor(public trans: Transaction[]) {}
-}
+// export class writeToReduser implements Action {
+//   readonly type = FeatureActionsEnum.writeToReduser;
+//   constructor(public trans: Transaction[]) {}
+// }
 
-export class loadItemsFailure implements Action {
-  readonly type = FeatureActionsEnum.loadItemsFailure;
-  constructor(public error: any) {}
-}
+// export class loadItemsFailure implements Action {
+//   readonly type = FeatureActionsEnum.loadItemsFailure;
+//   constructor(public error: any) {}
+// }
 
-// export const loadTransactions = createAction('[Feature] Load Transactions');
-// export const writeToReduser = createAction(
-//   '[Feature] Write To Reduser',
-//   props<{ trans: Transaction[] }>()
-// );
+export const loadTransactions = createAction(FeatureActionsEnum.loadTransactions);
+export const writeToReduser = createAction(
+  FeatureActionsEnum.writeToReduser,
+  props<{ trans: Transaction[] }>()
+);
 // export const errorOutput = createAction('[Feature] Error Output');
-// export const loadItemsFailure = createAction(
-//   '[Feature] Load Items Failture',
-//   props<{ error: string }>()
-// );
+export const loadItemsFailure = createAction(
+  FeatureActionsEnum.loadItemsFailure,
+  props<{ error: string }>()
+);
 
 // // 1. Простые actions (без данных)
 // export const loadItems = createAction('[Feature] Load Item');

@@ -1,15 +1,14 @@
-// import { Injectable } from '@angular/core';
-// import { Actions, createEffect, ofType } from '@ngrx/effects';
-// import { BackendService } from '../../../shared/services/backend';
-// import { loadItemsFailure, loadTransactions, writeToReduser } from './feature.actions';
-// import { catchError, map, of, switchMap } from 'rxjs';
-
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { BackendService } from '../../../shared/services/backend';
 import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { FeatureActionsEnum, loadItemsFailure, writeToReduser } from './feature.actions';
+import {
+  FeatureActionsEnum,
+  loadItemsFailure,
+  loadTransactions,
+  writeToReduser,
+} from './feature.actions';
 
 // @Injectable()
 // export class FeatureEffects {
@@ -34,26 +33,6 @@ import { FeatureActionsEnum, loadItemsFailure, writeToReduser } from './feature.
 //   });
 // }
 
-// // 1. Импорты
-// import { Injectable } from '@angular/core';
-// import { Actions, createEffect, ofType } from '@ngrx/effects';
-// import { of } from 'rxjs';
-// import { catchError, map, switchMap } from 'rxjs/operators';
-// import * as FeatureActions from './feature.actions';
-
-// // 2. Декоратор
-// @Injectable()
-// export class FeatureEffects {
-//   // 3. Конструктор с private actions$
-//   constructor(private actions$: Actions) {
-//     console.log('Actions:', this.actions$);
-//     console.log('Actions type:', typeof this.actions$);
-//     console.log('Has pipe?', !!this.actions$.pipe);
-//   } // ← КЛЮЧЕВОЙ МОМЕНТ!
-
-//   // 4. Effect с правильным именем ($ в конце)
-// }
-
 @Injectable()
 export class FeatureEffects {
   constructor(
@@ -69,8 +48,8 @@ export class FeatureEffects {
     this.actions$.pipe(
       ofType(FeatureActionsEnum.loadTransactions),
       switchMap(() => this.back.getTransaction()),
-      map(res => new writeToReduser(res)),
-      catchError(err => of(new loadItemsFailure(err)))
+      map(trans => writeToReduser({ trans })),
+      catchError(err => of(loadItemsFailure(err)))
     )
   );
 }
