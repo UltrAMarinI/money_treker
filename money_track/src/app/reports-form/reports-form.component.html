@@ -42,7 +42,7 @@
       </mat-form-field>
     </div>
     <div class="display-column width-22rem">
-      @if (reportsTypeValue) {
+      @if (TypeVal()) {
         <mat-label>Тип налогообложения</mat-label>
         <mat-radio-group formControlName="taxSystem">
           <mat-radio-button value="OSHO" name="taxSystem"> <p>ОСНО</p></mat-radio-button>
@@ -76,7 +76,7 @@
           <mat-radio-button [value]="false">Нет</mat-radio-button>
         </mat-radio-group>
       </div>
-      @if (specialAuditValue) {
+      @if (specialAuditValueSignal()) {
         <div class="display-column width-22rem">
           <mat-form-field>
             <mat-label>Цель специального аудита?</mat-label>
@@ -97,7 +97,7 @@
           <mat-radio-button [value]="false">Нет</mat-radio-button>
         </mat-radio-group>
       </div>
-      @if (InternationalOperationsValue) {
+      @if (InternationalOperationsValueSignal()) {
         <div class="display-column width-22rem">
           <mat-form-field>
             <mat-label>Страны операций</mat-label>

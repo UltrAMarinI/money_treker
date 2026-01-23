@@ -1,5 +1,5 @@
 <div class="center">
-  <div class="title">{{ isLogin ? 'Вход' : 'Регистрация' }}</div>
+  <div class="title">{{ isLogin() ? 'Вход' : 'Регистрация' }}</div>
   <div class="color_white">
     <form class="inputs_button" [formGroup]="loginForm">
       <div>
@@ -34,7 +34,7 @@
       </div>
     </form>
     <div class="button_menu">
-      @if (isLogin === true) {
+      @if (isLogin()) {
         <button matButton="tonal" class="dooble-button">
           <a style="text-decoration: none; color: #3e4759" [routerLink]="['/authentication']"
             >Регистрация</a
@@ -47,7 +47,7 @@
       }
 
       <button matButton="tonal" class="dooble-button" (click)="submit()">
-        {{ isLogin ? 'Войти' : 'Зарегистрироваться' }}
+        {{ isLogin() ? 'Войти' : 'Зарегистрироваться' }}
       </button>
     </div>
   </div>

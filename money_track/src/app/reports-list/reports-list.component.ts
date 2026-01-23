@@ -31,12 +31,12 @@ export class ReportsListComponent implements OnInit {
 
   constructor(
     private back: BackendService,
-    private ReportSubject: ReportService,
+    private reportSubject: ReportService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.ReportSubject.getEdit().subscribe(curr => {
+    this.reportSubject.getEdit().subscribe(curr => {
       if (!curr) {
         this.getAllReports();
       }
@@ -57,7 +57,7 @@ export class ReportsListComponent implements OnInit {
 
   editReport(id: string) {
     this.back.getApplicationById(id).subscribe(rep => {
-      this.ReportSubject.changeReport(rep);
+      this.reportSubject.changeReport(rep);
     });
     this.router.navigate(['/reports']);
   }

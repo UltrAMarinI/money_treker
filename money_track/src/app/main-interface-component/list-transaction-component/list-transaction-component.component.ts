@@ -1,12 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, effect, input, OnInit, output, signal } from '@angular/core';
 import { Transaction } from '../../../shared/interface/transaction.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
@@ -40,34 +32,35 @@ interface Type {
   templateUrl: './list-transaction-component.component.html',
   styleUrl: './list-transaction-component.component.scss',
 })
-export class ListTransactionComponentComponent implements OnChanges, OnInit {
+export class ListTransactionComponentComponent implements OnInit {
   //список с редактированием и удалением
-  constructor(public langService: TranslateService) {}
+  constructor(public langService: TranslateService) {
+    effect(() => {
+      this.applyAllFilters();
+    });
+  }
 
-  @Output() deleteTrans = new EventEmitter<string>();
-  @Output() editTrans = new EventEmitter<Transaction>();
-  @Input() transArray: Transaction[] = [];
-
-  types: Type[] = [
-    { value: 'undefined', viewValue: 'Все' },
-    { value: 'income', viewValue: 'Доход' },
-    { value: 'expense', viewValue: 'Расход' },
-  ];
-
-  amountes: Type[] = [
-    { value: 'undefined', viewValue: 'Все' },
-    { value: 'ascending', viewValue: 'По возрастанию' },
-    { value: 'descending', viewValue: 'По убыванию' },
-  ];
+  deleteTrans = output<string>();
+  editTrans = output<Transaction>();
+  transArray = input<Transaction[]>([]);
+  filterTransaction = signal<Transaction[]>([]);
 
   typeControl = new FormControl(null);
   amountControl = new FormControl(null);
   categoriesControl = new FormControl(null);
   categoryList: string[] = ['food', 'transport', 'salary', 'present'];
-  filterTransaction: Transaction[] = [];
-  paginatorInfo = {};
   pageSize = 5;
   pageIndex = 0;
+  types: Type[] = [
+    { value: 'undefined', viewValue: 'Все' },
+    { value: 'income', viewValue: 'Доход' },
+    { value: 'expense', viewValue: 'Расход' },
+  ];
+  amountes: Type[] = [
+    { value: 'undefined', viewValue: 'Все' },
+    { value: 'ascending', viewValue: 'По возрастанию' },
+    { value: 'descending', viewValue: 'По убыванию' },
+  ];
 
   ngOnInit(): void {
     this.typeControl.valueChanges.subscribe(() => this.applyAllFilters());
@@ -75,14 +68,8 @@ export class ListTransactionComponentComponent implements OnChanges, OnInit {
     this.categoriesControl.valueChanges.subscribe(() => this.applyAllFilters());
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['transArray']?.currentValue) {
-      this.applyAllFilters();
-    }
-  }
-
   applyAllFilters() {
-    let filtered = [...this.transArray];
+    let filtered = [...this.transArray()];
 
     if (this.typeControl.value && this.typeControl.value !== 'undefined') {
       filtered = filtered.filter(trans => trans.type === this.typeControl.value);
@@ -99,13 +86,13 @@ export class ListTransactionComponentComponent implements OnChanges, OnInit {
       filtered = filtered.filter(trans => categories!.includes(trans.category));
     }
 
-    this.filterTransaction = filtered;
+    this.filterTransaction.set(filtered);
     this.pageIndex = 0;
   }
 
   get paginatedTransactions() {
     const startIndex = this.pageIndex * this.pageSize;
-    return this.filterTransaction.slice(startIndex, startIndex + this.pageSize);
+    return this.filterTransaction().slice(startIndex, startIndex + this.pageSize);
   }
 
   resetFilterButton() {

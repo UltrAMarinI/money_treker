@@ -35,9 +35,9 @@ import { NameSubjectService } from '../../shared/services/nameSubject.service';
 })
 export class AuthenticationComponentComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
-  isLogin = true;
-  hide = signal(true);
-  errorMessage = signal('');
+  isLogin = signal<boolean>(true);
+  hide = signal<boolean>(true);
+  errorMessage = signal<string>('');
 
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -52,7 +52,7 @@ export class AuthenticationComponentComponent implements OnInit {
   ) {}
 
   @HostListener('document:keydown.enter', ['$event'])
-  handleEnterKey(event: KeyboardEvent) {
+  handleEnterKey(event: Event) {
     if (this.loginForm.valid) {
       event.preventDefault();
       this.submit();
@@ -60,7 +60,7 @@ export class AuthenticationComponentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isLogin = this.route.snapshot.url[0]?.path === 'login';
+    this.isLogin.set(this.route.snapshot.url[0]?.path === 'login');
     merge(
       this.loginForm.controls['email'].valueChanges,
       this.loginForm.controls['email'].statusChanges
@@ -101,7 +101,7 @@ export class AuthenticationComponentComponent implements OnInit {
 
   submit() {
     if (this.loginForm.valid) {
-      if (this.isLogin) {
+      if (this.isLogin()) {
         this.loginUser();
       } else {
         this.singupUser();

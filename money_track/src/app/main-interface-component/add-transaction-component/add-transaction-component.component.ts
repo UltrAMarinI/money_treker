@@ -1,12 +1,4 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  Output,
-  EventEmitter,
-  Input,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, output, effect, input, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -44,21 +36,22 @@ import { AsyncPipe } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class AddTransactionComponentComponent implements OnChanges {
+export class AddTransactionComponentComponent {
   //форма добавления
-  @Output() addFormTranz = new EventEmitter<Transaction>();
-  @Output() editFormTrans = new EventEmitter<Transaction>();
-  @Output() isEdit = new EventEmitter<boolean>();
-  @Input() upForm!: Transaction | undefined;
+  addFormTranz = output<Transaction>();
+  editFormTrans = output<Transaction>();
+  isEdit = output<boolean>();
+  upForm = input.required<Transaction | undefined>();
+  private isFirstChange = signal(true);
 
-  constructor(public langService: TranslateService) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['upForm'].firstChange) {
-      return;
-    } else {
+  constructor(public langService: TranslateService) {
+    effect(() => {
+      if (this.isFirstChange()) {
+        this.isFirstChange.set(false);
+        return;
+      }
       this.isFormNotNull();
-    }
+    });
   }
 
   TransForm: FormGroup = new FormGroup({
@@ -70,12 +63,13 @@ export class AddTransactionComponentComponent implements OnChanges {
   });
 
   addTransaction() {
-    if (this.upForm === undefined) {
+    const formValue = this.upForm();
+    if (formValue === undefined) {
       this.addFormTranz.emit(this.TransForm.value);
     } else {
       const editerForm: Transaction = {
         ...this.TransForm.value,
-        _id: this.upForm._id,
+        _id: formValue._id,
       };
       this.editFormTrans.emit(editerForm);
       this.isEdit.emit(true);
@@ -84,12 +78,13 @@ export class AddTransactionComponentComponent implements OnChanges {
   }
 
   isFormNotNull() {
-    if (this.upForm !== undefined) {
-      this.TransForm.get('type')?.setValue(this.upForm.type);
-      this.TransForm.get('amount')?.setValue(this.upForm.amount);
-      this.TransForm.get('category')?.setValue(this.upForm.category);
-      this.TransForm.get('date')?.setValue(this.upForm.date);
-      this.TransForm.get('description')?.setValue(this.upForm.description);
+    const formValue = this.upForm();
+    if (formValue) {
+      this.TransForm.get('type')?.setValue(formValue.type);
+      this.TransForm.get('amount')?.setValue(formValue.amount);
+      this.TransForm.get('category')?.setValue(formValue.category);
+      this.TransForm.get('date')?.setValue(formValue.date);
+      this.TransForm.get('description')?.setValue(formValue.description);
     }
   }
 }

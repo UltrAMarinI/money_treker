@@ -1,4 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  OnDestroy,
+  signal,
+  computed,
+} from '@angular/core';
 import { FormGroup, ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -42,8 +49,11 @@ export class ReportsFormComponent implements OnInit, OnDestroy {
     'Отчет о движении денежных средств',
     'Налоговая отчетность',
   ];
-  formWasChanged = false;
+  formWasChanged = signal<boolean>(false)
   updateForm!: Partial<AuditApplication>;
+  reportsTypeValSignal = signal<string[]>([]);
+  specialAuditValueSignal = signal<boolean>(false);
+  InternationalOperationsValueSignal = signal<boolean>(false);
 
   constructor(
     private fb: FormBuilder,
@@ -54,7 +64,13 @@ export class ReportsFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
     this.reportsForm.valueChanges.subscribe(() => {
-      this.formWasChanged = true;
+      this.reportsTypeValSignal.set(this.reportsForm.get('selectedReportTypes')?.value);
+      this.specialAuditValueSignal.set(this.reportsForm.get('specialAuditNeeded')?.value);
+      this.InternationalOperationsValueSignal.set(
+        this.reportsForm.get('hasInternationalOperations')?.value
+      );
+
+      this.formWasChanged.set(true);
     });
     this.reportsForm.controls['selectedReportTypes'].valueChanges.subscribe(a => {
       if (a && a.includes('Налоговая отчетность')) {
@@ -121,27 +137,12 @@ export class ReportsFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  //reportsTypeVal=signal(false);
-  //TODO
-  //переписать на сигналы геттеры
-
-  public get reportsTypeValue(): boolean {
-    const type: string[] = this.reportsForm.get('selectedReportTypes')?.value;
-    if (type) {
-      return type.includes('Налоговая отчетность');
+  public TypeVal = computed(() => {
+    if (!this.reportsTypeValSignal) {
+      return false;
     }
-    return false;
-  }
-
-  public get specialAuditValue(): boolean {
-    const audit: boolean = this.reportsForm.get('specialAuditNeeded')?.value;
-    return audit;
-  }
-
-  public get InternationalOperationsValue() {
-    const intOperation: boolean = this.reportsForm.get('hasInternationalOperations')?.value;
-    return intOperation;
-  }
+    return this.reportsTypeValSignal().includes('Налоговая отчетность');
+  });
 
   public addReports() {
     if (this.reportsForm.invalid) {
@@ -209,7 +210,7 @@ export class ReportsFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (!this.formWasChanged && !this.reportsForm.dirty) {
+    if (!this.formWasChanged() && !this.reportsForm.dirty) {
       return;
     }
     if (this.updateForm._id) {

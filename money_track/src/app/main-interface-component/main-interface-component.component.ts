@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { HeaderComponentComponent } from './header-component/header-component.component';
 import { AddTransactionComponentComponent } from './add-transaction-component/add-transaction-component.component';
 import { ListTransactionComponentComponent } from './list-transaction-component/list-transaction-component.component';
@@ -7,8 +7,8 @@ import { Transaction } from '../../shared/interface/transaction.interface';
 import { GraphicsTransactionComponentComponent } from './graphics-transaction-component/graphics-transaction-component.component';
 import { Router, RouterModule } from '@angular/router';
 import { MatAnchor } from '@angular/material/button';
-import { addItems, loadItems } from '../store/feature/feature.actions';
 import { Store } from '@ngrx/store';
+import { loadTransactions } from '../store';
 
 @Component({
   selector: 'app-main-interface-component',
@@ -42,7 +42,7 @@ export class MainInterfaceComponentComponent implements OnInit {
     });
   }
 
-  arrayTrans: Transaction[] = [];
+  arrayTrans = signal<Transaction[]>([]);
   edit!: Transaction | undefined;
 
   addTranzact(form: Transaction): void {
@@ -53,7 +53,7 @@ export class MainInterfaceComponentComponent implements OnInit {
 
   getTransArr() {
     this.back.getTransaction().subscribe(arr => {
-      this.arrayTrans = arr;
+      this.arrayTrans.set(arr);
     });
   }
 
@@ -77,14 +77,14 @@ export class MainInterfaceComponentComponent implements OnInit {
   }
 
   resetFormCard(isEdit: boolean) {
-    if (isEdit === true) this.edit = undefined;
+    if (isEdit) this.edit = undefined;
   }
 
   reportsButton() {
     this.router.navigate(['/reports']);
   }
 
-  stateButton() {
-    this.store.dispatch(addItems({ item: 1 }));
-  }
+  // stateButton() {
+  //   this.store.dispatch(loadTransactions());
+  // }
 }

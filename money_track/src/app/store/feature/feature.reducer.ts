@@ -5,11 +5,10 @@ export interface TestState {
 }
 
 export const initialState: TestState = {
-  message: 'Store работает!'
+  message: 'Store работает!',
 };
 
 export const testReducer = createReducer(initialState);
-
 
 // import { createReducer, on } from '@ngrx/store';
 // import * as FeatureActions from './feature.actions';

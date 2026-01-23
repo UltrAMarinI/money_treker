@@ -9,15 +9,15 @@
         [upForm]="edit"
       ></app-add-transaction-component>
       <app-graphics-transaction-component
-        [transArrayGraph]="arrayTrans"
+        [transArrayGraph]="arrayTrans()"
       ></app-graphics-transaction-component>
     </div>
     <app-list-transaction-component
       (deleteTrans)="deleteTranz($event)"
       (editTrans)="editTransact($event)"
-      [transArray]="arrayTrans"
+      [transArray]="arrayTrans()"
     ></app-list-transaction-component>
   </div>
   <button matButton="tonal" (click)="reportsButton()">Отчеты</button>
-  <button matButton="tonal" (click)="stateButton()">State</button>
+  <!-- <button matButton="tonal" (click)="stateButton()">State</button> -->
 </div>

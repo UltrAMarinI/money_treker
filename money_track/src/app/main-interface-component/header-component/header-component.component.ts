@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { NameSubjectService } from '../../../shared/services/nameSubject.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -23,13 +23,11 @@ export class HeaderComponentComponent implements OnInit {
     public langService: TranslateService
   ) {}
 
-  usrName = 'имя';
-  // languageRus: boolean = true;
-  // languageEng: boolean = false;
+  usrName = signal<string>('');
 
   ngOnInit(): void {
     this.sbjService.userName.subscribe(name => {
-      this.usrName = name;
+      this.usrName.set(name);
     });
   }
 

@@ -20,6 +20,7 @@ export class GraphicsTransactionComponentComponent implements OnDestroy {
   }
 
   chart!: Chart;
+
   constructor(private datePipe: DatePipe) {}
 
   ngOnDestroy() {
