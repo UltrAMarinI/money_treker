@@ -84,7 +84,7 @@ export class MainInterfaceComponentComponent implements OnInit {
     this.router.navigate(['/reports']);
   }
 
-  // stateButton() {
-  //   this.store.dispatch(loadTransactions());
-  // }
+  stateButton() {
+    this.store.dispatch(loadTransactions());
+  }
 }
